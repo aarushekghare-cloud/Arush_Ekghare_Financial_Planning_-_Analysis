@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Projects — Arush Ekghare</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0a0a0a;--mid:#555;--light:#888;
+  --rule:#e2e2e2;--bg:#f5f5f4;--white:#fff;
+  --green:#16a34a;--green-bg:#f0fdf4;
+  --blue:#2563eb;
+  --red:#dc2626;--red-bg:#fef2f2;
+}
+html{font-size:16px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--black);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:'Inter',sans-serif;cursor:pointer}
+
+/* Login */
+#login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:var(--black);
+}
+.login-box{background:var(--white);width:min(380px,92%);padding:2.5rem}
+.login-logo{font-size:1.1rem;font-weight:800;color:var(--black);margin-bottom:.3rem}
+.login-sub{font-size:.75rem;color:var(--light);margin-bottom:2rem}
+.login-label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:.35rem}
+.login-input{
+  width:100%;padding:.7rem .85rem;border:1.5px solid var(--rule);
+  font-family:'Inter',sans-serif;font-size:.85rem;outline:none;
+  transition:border-color .2s;background:var(--bg);
+}
+.login-input:focus{border-color:var(--black);background:var(--white)}
+.login-btn{
+  width:100%;margin-top:1.2rem;padding:.8rem;
+  background:var(--black);color:var(--white);
+  font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border:none;transition:opacity .2s;
+}
+.login-btn:hover{opacity:.85}
+.login-err{font-size:.75rem;color:var(--red);margin-top:.7rem;display:none}
+
+/* App */
+#app{display:none;flex-direction:column;min-height:100vh}
+
+/* Top bar */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:var(--black);color:var(--white);
+  height:56px;display:flex;align-items:center;
+  padding:0 min(2.5rem,4vw);gap:1rem;
+}
+.topbar-logo{font-size:.95rem;font-weight:800;margin-right:auto}
+.topbar-logo span{color:#9ca3af;font-weight:400;font-size:.78rem;margin-left:.5rem}
+.topbar-btn{
+  background:transparent;border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.7);font-size:.72rem;font-weight:600;
+  padding:5px 14px;transition:all .2s;
+}
+.topbar-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+.topbar-badge{
+  background:var(--blue);color:#fff;font-size:.65rem;font-weight:700;
+  padding:2px 8px;border-radius:100px;
+}
+
+/* Tab nav */
+.tab-nav{display:flex;gap:.4rem;margin-right:.5rem}
+.tab-btn{
+  padding:.45rem 1.1rem;font-size:.75rem;font-weight:700;
+  border:1.5px solid rgba(255,255,255,.3);background:transparent;
+  color:rgba(255,255,255,.6);transition:all .2s;cursor:pointer;
+  font-family:'Inter',sans-serif;letter-spacing:.03em;
+}
+.tab-btn.active{background:#fff;color:#0a0a0a;border-color:#fff}
+.tab-btn:hover:not(.active){background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.5)}
+
+/* Main */
+.main-wrap{padding:1.5rem min(2.5rem,4vw) 4rem;flex:1;overflow-y:auto}
+
+/* Section */
+.edit-section{background:#fff;border:1px solid var(--rule);margin-bottom:1.1rem}
+.edit-section-head{
+  padding:.75rem 1.2rem;border-bottom:1px solid var(--rule);
+  background:#f9f9f9;font-size:.65rem;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--mid)
+}
+.edit-section-body{padding:1.1rem 1.2rem}
+.section-head-flex{display:flex;align-items:center;justify-content:space-between}
+
+/* Grid and form */
+.edit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.85rem}
+.edit-field{display:flex;flex-direction:column;gap:.28rem}
+.edit-field.wide{grid-column:1/-1}
+.edit-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mid)}
+.edit-input,.edit-textarea{
+  width:100%;padding:.55rem .75rem;
+  border:1.5px solid var(--rule);background:var(--bg);
+  font-family:'Inter',sans-serif;font-size:.82rem;outline:none;
+  color:var(--black);transition:border-color .2s;
+}
+.edit-input:focus,.edit-textarea:focus{border-color:var(--black);background:#fff}
+.edit-textarea{min-height:80px;resize:vertical;line-height:1.6}
+
+/* Blocks */
+.exp-block{border:1px solid var(--rule);padding:.9rem;background:#fafafa;margin-bottom:.7rem}
+.exp-block-head{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between}
+.add-btn{
+  padding:.35rem .85rem;font-size:.68rem;font-weight:700;
+  border:1.5px solid var(--green);background:var(--green-bg);
+  color:var(--green);cursor:pointer;font-family:'Inter',sans-serif;
+  transition:all .2s;letter-spacing:.03em;text-transform:uppercase;
+}
+.add-btn:hover{background:var(--green);color:#fff}
+.remove-btn{
+  padding:.25rem .65rem;font-size:.62rem;font-weight:600;
+  border:1.5px solid var(--red);background:var(--red-bg);
+  color:var(--red);cursor:pointer;font-family:'Inter',sans-serif;
+  transition:all .2s;
+}
+.remove-btn:hover{background:var(--red);color:#fff}
+
+/* Footer */
+.edit-footer{
+  position:sticky;bottom:0;z-index:10;
+  background:#fff;border-top:1px solid var(--rule);
+  padding:.9rem 1.2rem;
+  display:flex;align-items:center;gap:1rem;
+  margin-top:.5rem;
+}
+.save-btn{
+  padding:.65rem 1.6rem;background:var(--black);color:#fff;
+  font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .2s;
+}
+.save-btn:hover{opacity:.82}
+.save-msg{font-size:.78rem;color:var(--green);font-weight:600}
+
+/* Empty state */
+.empty-state{text-align:center;padding:4rem 1rem;color:var(--light);font-size:.85rem}
+.empty-state svg{width:40px;height:40px;margin:0 auto 1rem;opacity:.3;display:block}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Arush Ekghare</div>
+    <div class="login-sub">Projects Management — Admin Access</div>
+    <label class="login-label" for="pwd">Password</label>
+    <input class="login-input" type="password" id="pwd" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">Sign In &rarr;</button>
+    <div class="login-err" id="login-err">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-logo">Admin Panel <span>Arush Ekghare</span></div>
+    <span id="proj-count" class="topbar-badge">0 Projects</span>
+    <div class="tab-nav">
+      <a href="admin.html" class="tab-btn" style="text-decoration:none;text-align:center">Enquiries</a>
+      <a href="admin.html" class="tab-btn" style="text-decoration:none;text-align:center" onclick="sessionStorage.setItem('ae_tab','edit')">Edit Content</a>
+      <button class="tab-btn active">Projects</button>
+    </div>
+    <button class="topbar-btn" onclick="doLogout()">Sign Out</button>
+  </div>
+
+  <div class="main-wrap">
+    <div class="edit-section">
+      <div class="edit-section-head">
+        <div class="section-head-flex" style="width:100%">
+          <span>All Projects</span>
+          <button class="add-btn" onclick="addProj()">+ Add Project</button>
+        </div>
+      </div>
+      <div class="edit-section-body">
+        <div id="proj-container"></div>
+        <div class="empty-state" id="empty" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          No projects yet. Click "+ Add Project" to get started.
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-footer">
+      <button class="save-btn" onclick="saveProjects()">Save Changes &rarr;</button>
+      <span class="save-msg" id="save-msg"></span>
+      <span style="font-size:.7rem;color:var(--light);margin-left:auto">After saving, refresh your portfolio to see changes.</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const CKEY = 'ae_content';
+const DEFAULT_PASS = 'arush@2025';
+function getPass(){ return localStorage.getItem('ae_admin_pass') || DEFAULT_PASS; }
+
+// ── Auth ──
+function doLogin(){
+  const v = document.getElementById('pwd').value;
+  if(v === getPass()){
+    sessionStorage.setItem('ae_auth','1');
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    initPage();
+  } else {
+    document.getElementById('login-err').style.display='block';
+    document.getElementById('pwd').value='';
+  }
+}
+function doLogout(){
+  sessionStorage.removeItem('ae_auth');
+  window.location.href = 'index.html';
+}
+if(sessionStorage.getItem('ae_auth')==='1'){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  window.addEventListener('DOMContentLoaded', initPage);
+}
+
+// ── Data ──
+const DEFAULT_PROJS = [
+  { cat:'Forecasting', title:'Rolling 13-Week Cash Flow Model', desc:'Dynamic Excel-VBA model integrating AR/AP aging, payroll and capex schedules. Automated weekly refresh from ERP exports.', metrics:'Accuracy +18%,Prep time \u219387%', tools:'Excel,VBA,SAP' },
+  { cat:'Dashboard', title:'APAC P&L Management Dashboard', desc:'Power BI with DAX measures for real-time 5-market P&L visibility, drill-down by BU, channel, and budget-vs-actual comparisons.', metrics:'5 Markets,Report time \u219340%', tools:'Power BI,DAX,SQL' },
+  { cat:'Working Capital', title:'AR Collections & DSO Optimisation', desc:'Rebuilt AR aging tracker with automated dunning alerts and collector KPI tracking. Identified top-20 accounts = 68% of overdue value.', metrics:'DSO \u219325%,\u20B91.2Cr unlocked', tools:'Excel,VBA,Oracle' },
+  { cat:'Budgeting', title:'Annual Operating Plan Model', desc:'Led AOP build for \u20B950Cr+ revenue base, consolidating 8 cost centres with driver-based revenue and headcount planning, plus scenario toggles.', metrics:'\u20B950Cr+ budget,8 stakeholders', tools:'Excel,SAP BPC,PowerPoint' },
+  { cat:'Cost Analysis', title:'Overhead Spend Analytics', desc:'Bottom-up cost review across G&A, marketing and logistics. Identified \u20B980L in renegotiable vendor contracts and \u20B91.2Cr avoidable spend.', metrics:'\u20B92Cr+ savings,12 contracts', tools:'Excel,Python,Tableau' },
+  { cat:'Automation', title:'Monthly Close Automation', desc:'Python scripts for journal extraction, intercompany elimination, and flash report generation. Reduced close cycle from 5 days to 3 days.', metrics:'Close \u21932 days,Manual steps \u219360%', tools:'Python,pandas,SAP' }
+];
+
+function loadContent(){
+  const raw = localStorage.getItem(CKEY);
+  return raw ? JSON.parse(raw) : {};
+}
+function getProjects(){
+  const data = loadContent();
+  return data.projects && data.projects.length ? data.projects : DEFAULT_PROJS;
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── Render ──
+function renderProjs(projs){
+  const container = document.getElementById('proj-container');
+  const empty = document.getElementById('empty');
+  document.getElementById('proj-count').textContent = projs.length + ' Project' + (projs.length!==1?'s':'');
+
+  if(!projs.length){
+    container.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  container.innerHTML = projs.map((p,i)=>{
+    return `
+    <div class="exp-block" id="proj-block-${i}">
+      <div class="exp-block-head">Project ${i+1} <button class="remove-btn" onclick="removeProj(${i})">Remove</button></div>
+      <div class="edit-grid">
+        <div class="edit-field"><label class="edit-label">Category</label><input class="edit-input" id="e-proj-${i}-cat" value="${escAttr(p.cat||'')}" placeholder="e.g. Forecasting, Dashboard"/></div>
+        <div class="edit-field"><label class="edit-label">Project Title</label><input class="edit-input" id="e-proj-${i}-title" value="${escAttr(p.title||'')}"/></div>
+        <div class="edit-field wide"><label class="edit-label">Description</label><textarea class="edit-textarea" id="e-proj-${i}-desc">${esc(p.desc||'')}</textarea></div>
+        <div class="edit-field"><label class="edit-label">Metrics (comma-separated)</label><input class="edit-input" id="e-proj-${i}-metrics" value="${escAttr(p.metrics||'')}" placeholder="Accuracy +18%, Prep time"/></div>
+        <div class="edit-field"><label class="edit-label">Tools (comma-separated)</label><input class="edit-input" id="e-proj-${i}-tools" value="${escAttr(p.tools||'')}" placeholder="Excel, VBA, SAP"/></div>
+        <div class="edit-field wide"><label class="edit-label">Dashboard / Live Link <span style="font-weight:400;letter-spacing:0;text-transform:none;color:var(--light)">(Google Drive, Power BI, Tableau, or any URL)</span></label><input class="edit-input" id="e-proj-${i}-link" value="${escAttr(p.link||'')}" placeholder="https://drive.google.com/file/d/.../view"/></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function collectProjs(){
+  const blocks = document.querySelectorAll('[id^="proj-block-"]');
+  return Array.from(blocks).map((_,i)=>({
+    cat:     document.getElementById('e-proj-'+i+'-cat').value,
+    title:   document.getElementById('e-proj-'+i+'-title').value,
+    desc:    document.getElementById('e-proj-'+i+'-desc').value,
+    metrics: document.getElementById('e-proj-'+i+'-metrics').value,
+    tools:   document.getElementById('e-proj-'+i+'-tools').value,
+    link:    document.getElementById('e-proj-'+i+'-link').value
+  }));
+}
+
+// ── Actions ──
+function addProj(){
+  const projs = collectProjs();
+  projs.push({ cat:'', title:'', desc:'', metrics:'', tools:'' });
+  renderProjs(projs);
+  document.getElementById('proj-block-'+(projs.length-1)).scrollIntoView({behavior:'smooth'});
+}
+
+function removeProj(i){
+  if(!confirm('Remove this project?')) return;
+  const projs = collectProjs();
+  projs.splice(i,1);
+  renderProjs(projs);
+}
+
+function saveProjects(){
+  const data = loadContent();
+  data.projects = collectProjs();
+  localStorage.setItem(CKEY, JSON.stringify(data));
+  const msg = document.getElementById('save-msg');
+  msg.textContent = '\u2713 Projects saved successfully!';
+  setTimeout(()=>{ msg.textContent=''; }, 4000);
+}
+
+function initPage(){
+  renderProjs(getProjects());
+}
+
+// Auto-init if already on DOMContentLoaded
+if(document.readyState !== 'loading' && sessionStorage.getItem('ae_auth')==='1'){
+  initPage();
+}
+</script>
+</body>
+</html>

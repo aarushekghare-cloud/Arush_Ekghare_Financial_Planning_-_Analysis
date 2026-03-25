@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin Panel — Arush Ekghare</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0a0a0a;--dark:#1a1a1a;--mid:#555;--light:#888;
+  --rule:#e2e2e2;--bg:#f5f5f4;--white:#fff;
+  --green:#16a34a;--green-bg:#f0fdf4;--green-bd:#86efac;
+  --amber:#d97706;--amber-bg:#fffbeb;--amber-bd:#fde68a;
+  --blue:#2563eb;--blue-bg:#eff6ff;--blue-bd:#bfdbfe;
+  --red:#dc2626;--red-bg:#fef2f2;--red-bd:#fecaca;
+}
+html{font-size:16px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--black);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:'Inter',sans-serif;cursor:pointer}
+
+/* ── Login Screen ── */
+#login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:var(--black);
+}
+.login-box{
+  background:var(--white);width:min(380px,92%);padding:2.5rem;
+}
+.login-logo{
+  font-size:1.1rem;font-weight:800;color:var(--black);margin-bottom:.3rem;
+}
+.login-sub{font-size:.75rem;color:var(--light);margin-bottom:2rem}
+.login-label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:.35rem}
+.login-input{
+  width:100%;padding:.7rem .85rem;border:1.5px solid var(--rule);
+  font-family:'Inter',sans-serif;font-size:.85rem;outline:none;
+  transition:border-color .2s;background:var(--bg);
+}
+.login-input:focus{border-color:var(--black);background:var(--white)}
+.login-btn{
+  width:100%;margin-top:1.2rem;padding:.8rem;
+  background:var(--black);color:var(--white);
+  font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border:none;transition:opacity .2s;
+}
+.login-btn:hover{opacity:.85}
+.login-err{font-size:.75rem;color:var(--red);margin-top:.7rem;display:none}
+
+/* ── App Shell ── */
+#app{display:none;flex-direction:column;min-height:100vh}
+
+/* Top bar */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:var(--black);color:var(--white);
+  height:56px;display:flex;align-items:center;
+  padding:0 min(2.5rem,4vw);gap:1rem;
+}
+.topbar-logo{font-size:.95rem;font-weight:800;margin-right:auto}
+.topbar-logo span,.topbar-name-link{color:#9ca3af;font-weight:400;font-size:.78rem;margin-left:.5rem;text-decoration:none;transition:color .2s}
+.topbar-name-link:hover{color:#fff}
+.topbar-badge{
+  background:#dc2626;color:#fff;font-size:.65rem;font-weight:700;
+  padding:2px 8px;border-radius:100px;
+}
+.topbar-btn{
+  background:transparent;border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.7);font-size:.72rem;font-weight:600;
+  padding:5px 14px;transition:all .2s;
+}
+.topbar-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+
+/* Stats bar */
+.statsbar{
+  background:var(--white);border-bottom:1px solid var(--rule);
+  padding:.9rem min(2.5rem,4vw);
+  display:flex;gap:0;flex-wrap:wrap;
+}
+.stat-pill{
+  padding:.5rem 1.4rem;border-right:1px solid var(--rule);
+  display:flex;flex-direction:column;gap:2px;
+}
+.stat-pill:first-child{padding-left:0}
+.stat-pill:last-child{border-right:none}
+.sp-num{font-size:1.3rem;font-weight:800;color:var(--black);line-height:1}
+.sp-lbl{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--light)}
+
+/* Toolbar */
+.toolbar{
+  background:var(--white);border-bottom:1px solid var(--rule);
+  padding:.7rem min(2.5rem,4vw);
+  display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;
+}
+.search-wrap{position:relative;flex:1;min-width:180px;max-width:320px}
+.search-wrap svg{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);width:13px;height:13px;color:var(--light)}
+.search-input{
+  width:100%;padding:.55rem .8rem .55rem 2.1rem;
+  border:1.5px solid var(--rule);font-family:'Inter',sans-serif;
+  font-size:.8rem;outline:none;background:var(--bg);
+  transition:border-color .2s;
+}
+.search-input:focus{border-color:var(--black);background:var(--white)}
+.filter-tabs{display:flex;gap:.3rem;flex-wrap:wrap}
+.ftab{
+  padding:.45rem .9rem;font-size:.72rem;font-weight:600;
+  border:1.5px solid var(--rule);background:transparent;
+  color:var(--mid);transition:all .2s;
+}
+.ftab.active,.ftab:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+.bulk-btns{display:flex;gap:.4rem;margin-left:auto}
+.bulk-btn{
+  padding:.45rem .9rem;font-size:.7rem;font-weight:600;
+  border:1.5px solid var(--rule);background:transparent;
+  color:var(--mid);transition:all .2s;
+  display:flex;align-items:center;gap:.35rem;
+}
+.bulk-btn:hover{border-color:var(--black);color:var(--black)}
+.bulk-btn svg{width:11px;height:11px}
+
+/* Enquiry list */
+.list-wrap{padding:1.2rem min(2.5rem,4vw);flex:1}
+.empty-state{
+  text-align:center;padding:5rem 1rem;
+  color:var(--light);font-size:.85rem;
+}
+.empty-state svg{width:40px;height:40px;margin:0 auto 1rem;opacity:.3;display:block}
+
+/* Enquiry Card */
+.eq-card{
+  background:var(--white);border:1px solid var(--rule);
+  margin-bottom:.6rem;transition:border-color .2s;
+  overflow:hidden;
+}
+.eq-card:hover{border-color:#aaa}
+.eq-card.unread{border-left:3px solid var(--black)}
+.eq-header{
+  display:grid;
+  grid-template-columns:20px 1fr auto auto;
+  align-items:center;
+  gap:.8rem;padding:.9rem 1.1rem;cursor:pointer;
+}
+.eq-check input{width:14px;height:14px;cursor:pointer;accent-color:var(--black)}
+.eq-meta{min-width:0}
+.eq-name{font-size:.88rem;font-weight:700;color:var(--black);display:flex;align-items:center;gap:.5rem}
+.eq-name-val{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eq-preview{font-size:.75rem;color:var(--light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.eq-subject{font-size:.76rem;font-weight:600;color:var(--mid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eq-right{display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;flex-shrink:0}
+.eq-time{font-size:.65rem;color:var(--light);white-space:nowrap}
+.badge{
+  font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 8px;border-radius:2px;white-space:nowrap;
+}
+.badge-new{background:var(--black);color:var(--white)}
+.badge-read{background:#f3f4f6;color:var(--mid);border:1px solid var(--rule)}
+.badge-replied{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.eq-expand{width:18px;height:18px;flex-shrink:0;color:var(--light);transition:transform .25s}
+.eq-expand.open{transform:rotate(180deg)}
+.eq-expand svg{width:100%;height:100%}
+
+/* Expanded body */
+.eq-body{
+  display:none;padding:1rem 1.2rem 1.2rem calc(1.1rem + 20px + .8rem);
+  border-top:1px solid var(--rule-light,#f0f0f0);
+  background:#fafafa;
+}
+.eq-body.open{display:block}
+.eq-field{margin-bottom:.8rem}
+.eq-field-lbl{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--light);margin-bottom:.2rem}
+.eq-field-val{font-size:.83rem;color:var(--dark);line-height:1.65}
+.eq-field-val a{color:var(--blue);text-decoration:underline}
+.eq-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--rule)}
+.ea-btn{
+  padding:.4rem .9rem;font-size:.7rem;font-weight:600;
+  border:1.5px solid var(--rule);background:var(--white);
+  color:var(--mid);transition:all .2s;
+  display:inline-flex;align-items:center;gap:.35rem;
+}
+.ea-btn svg{width:11px;height:11px}
+.ea-btn:hover{border-color:var(--black);color:var(--black)}
+.ea-btn.green:hover{border-color:var(--green);color:var(--green)}
+.ea-btn.red:hover{border-color:var(--red);color:var(--red)}
+.ea-btn.blue:hover{border-color:var(--blue);color:var(--blue)}
+
+/* Responsive */
+@media(max-width:600px){
+  .eq-header{grid-template-columns:16px 1fr auto}
+  .eq-right{display:none}
+  .statsbar{gap:.5rem}
+  .stat-pill{padding:.5rem .8rem}
+  .bulk-btns{display:none}
+}
+
+/* ── Tab nav in topbar ── */
+.tab-nav{display:flex;gap:.4rem;margin-right:.5rem}
+.tab-btn{
+  padding:.45rem 1.1rem;font-size:.75rem;font-weight:700;
+  border:1.5px solid rgba(255,255,255,.3);background:transparent;
+  color:rgba(255,255,255,.6);transition:all .2s;cursor:pointer;
+  font-family:'Inter',sans-serif;letter-spacing:.03em;
+}
+.tab-btn.active{background:#fff;color:#0a0a0a;border-color:#fff}
+.tab-btn:hover:not(.active){background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.5)}
+
+/* ── Edit Panel ── */
+.edit-panel{display:none;padding:1.5rem min(2.5rem,4vw) 4rem;flex:1;overflow-y:auto}
+.edit-section{background:#fff;border:1px solid var(--rule);margin-bottom:1.1rem}
+.edit-section-head{
+  padding:.75rem 1.2rem;border-bottom:1px solid var(--rule);
+  background:#f9f9f9;font-size:.65rem;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--mid)
+}
+.edit-section-body{padding:1.1rem 1.2rem}
+.edit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.85rem}
+.edit-grid.cols1{grid-template-columns:1fr}
+.edit-field{display:flex;flex-direction:column;gap:.28rem}
+.edit-field.wide{grid-column:1/-1}
+.edit-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mid)}
+.edit-input,.edit-textarea{
+  width:100%;padding:.55rem .75rem;
+  border:1.5px solid var(--rule);background:var(--bg);
+  font-family:'Inter',sans-serif;font-size:.82rem;outline:none;
+  color:var(--black);transition:border-color .2s;
+}
+.edit-input:focus,.edit-textarea:focus{border-color:var(--black);background:#fff}
+.edit-textarea{min-height:80px;resize:vertical;line-height:1.6}
+.edit-textarea.tall{min-height:110px}
+.edit-footer{
+  position:sticky;bottom:0;z-index:10;
+  background:#fff;border-top:1px solid var(--rule);
+  padding:.9rem 1.2rem;
+  display:flex;align-items:center;gap:1rem;
+  margin-top:.5rem;
+}
+.save-btn{
+  padding:.65rem 1.6rem;background:var(--black);color:#fff;
+  font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .2s;
+}
+.save-btn:hover{opacity:.82}
+.save-msg{font-size:.78rem;color:var(--green);font-weight:600}
+.edit-hint{font-size:.68rem;color:var(--light);margin-top:.25rem}
+.exp-block{border:1px solid var(--rule);padding:.9rem;background:#fafafa;margin-bottom:.7rem}
+.exp-block-head{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between}
+.add-btn{
+  padding:.35rem .85rem;font-size:.68rem;font-weight:700;
+  border:1.5px solid var(--green);background:var(--green-bg);
+  color:var(--green);cursor:pointer;font-family:'Inter',sans-serif;
+  transition:all .2s;letter-spacing:.03em;text-transform:uppercase;
+}
+.add-btn:hover{background:var(--green);color:#fff}
+.remove-btn{
+  padding:.25rem .65rem;font-size:.62rem;font-weight:600;
+  border:1.5px solid var(--red);background:var(--red-bg);
+  color:var(--red);cursor:pointer;font-family:'Inter',sans-serif;
+  transition:all .2s;
+}
+.remove-btn:hover{background:var(--red);color:#fff}
+.section-head-flex{display:flex;align-items:center;justify-content:space-between}
+@media(max-width:600px){
+  .edit-grid{grid-template-columns:1fr}
+  .topbar{height:auto;flex-wrap:wrap;padding:.6rem min(2.5rem,4vw);gap:.5rem}
+  .topbar-logo{width:100%;margin-right:0;font-size:.85rem}
+  .tab-nav{order:1}
+  .topbar-btn{order:2;margin-left:auto}
+  .tab-btn{padding:.35rem .8rem;font-size:.7rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Arush Ekghare</div>
+    <div class="login-sub">Admin Panel — Enquiry System</div>
+    <label class="login-label" for="pwd">Password</label>
+    <input class="login-input" type="password" id="pwd" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div class="login-err" id="login-err">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ══════════════ APP ══════════════ -->
+<div id="app">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-logo">Admin Panel <a href="hidden.html" class="topbar-name-link">Arush Ekghare</a></div>
+    <span id="unread-badge" class="topbar-badge" style="display:none">0 New</span>
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-enq" onclick="switchTab('enquiries',this)">Enquiries</button>
+      <button class="tab-btn" id="tab-edit" onclick="switchTab('edit',this)">Edit Content</button>
+      <a href="projects-manage.html" class="tab-btn" style="text-decoration:none;text-align:center">Projects</a>
+    </div>
+    <button class="topbar-btn" onclick="doLogout()">Sign Out</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="statsbar" id="enq-statsbar">
+    <div class="stat-pill"><div class="sp-num" id="s-total">0</div><div class="sp-lbl">Total</div></div>
+    <div class="stat-pill"><div class="sp-num" id="s-new">0</div><div class="sp-lbl">Unread</div></div>
+    <div class="stat-pill"><div class="sp-num" id="s-replied">0</div><div class="sp-lbl">Replied</div></div>
+    <div class="stat-pill"><div class="sp-num" id="s-today">0</div><div class="sp-lbl">Today</div></div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar" id="enq-toolbar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" id="search" type="text" placeholder="Search by name, email or subject…" oninput="renderList()"/>
+    </div>
+    <div class="filter-tabs">
+      <button class="ftab active" data-f="all"    onclick="setFilter('all',this)">All</button>
+      <button class="ftab"        data-f="new"    onclick="setFilter('new',this)">New</button>
+      <button class="ftab"        data-f="read"   onclick="setFilter('read',this)">Read</button>
+      <button class="ftab"        data-f="replied"onclick="setFilter('replied',this)">Replied</button>
+    </div>
+    <div class="bulk-btns">
+      <button class="bulk-btn" onclick="bulkMarkRead()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Mark all read
+      </button>
+      <button class="bulk-btn" onclick="bulkDelete()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+        Clear all
+      </button>
+    </div>
+  </div>
+
+  <!-- List -->
+  <div class="list-wrap" id="list-wrap">
+    <div class="empty-state" id="empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0H4"/></svg>
+      No enquiries yet. They'll appear here when someone fills the contact form.
+    </div>
+    <div id="eq-list"></div>
+  </div>
+
+  <!-- ══════════ EDIT CONTENT PANEL ══════════ -->
+  <div class="edit-panel" id="edit-panel">
+
+    <!-- Profile Photo -->
+    <div class="edit-section">
+      <div class="edit-section-head">Profile Photo</div>
+      <div class="edit-section-body">
+        <div style="display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap">
+          <div id="photo-preview" style="width:80px;height:80px;border-radius:50%;overflow:hidden;background:#eee;flex-shrink:0;border:2px solid var(--rule)">
+            <img id="photo-img" src="photo.jpg" style="width:100%;height:100%;object-fit:cover"/>
+          </div>
+          <div>
+            <input type="file" id="photo-input" accept="image/*" onchange="handlePhotoUpload(this)" style="display:none"/>
+            <button class="save-btn" onclick="document.getElementById('photo-input').click()" style="padding:.45rem 1rem;font-size:.72rem">Upload New Photo</button>
+            <button class="save-btn" onclick="removePhoto()" style="padding:.45rem 1rem;font-size:.72rem;background:var(--red);margin-left:.4rem">Remove</button>
+            <div class="edit-hint" style="margin-top:.4rem">JPG or PNG. Stored in browser. Shown in hero banner circle.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CV Upload -->
+    <div class="edit-section">
+      <div class="edit-section-head">CV / Resume</div>
+      <div class="edit-section-body">
+        <div style="display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap">
+          <div style="width:50px;height:50px;background:var(--bg);border:2px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:24px;height:24px;color:var(--mid)"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div>
+            <div id="cv-status" style="font-size:.8rem;font-weight:600;color:var(--mid);margin-bottom:.4rem">No CV uploaded</div>
+            <input type="file" id="cv-input" accept=".pdf,.doc,.docx" onchange="handleCVUpload(this)" style="display:none"/>
+            <button class="save-btn" onclick="document.getElementById('cv-input').click()" style="padding:.45rem 1rem;font-size:.72rem">Upload CV</button>
+            <button class="save-btn" onclick="removeCV()" style="padding:.45rem 1rem;font-size:.72rem;background:var(--red);margin-left:.4rem">Remove</button>
+            <div class="edit-hint" style="margin-top:.4rem">PDF recommended, max 5MB. "Download CV" button on portfolio will use this file.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Password Change -->
+    <div class="edit-section">
+      <div class="edit-section-head">Change Admin Password</div>
+      <div class="edit-section-body">
+        <div class="edit-grid">
+          <div class="edit-field"><label class="edit-label">Current Password</label><input class="edit-input" id="pw-current" type="password"/></div>
+          <div class="edit-field"><label class="edit-label">New Password</label><input class="edit-input" id="pw-new" type="password"/></div>
+          <div class="edit-field"><label class="edit-label">Confirm New Password</label><input class="edit-input" id="pw-confirm" type="password"/></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.7rem;margin-top:.85rem">
+          <button class="save-btn" onclick="changePassword()" style="padding:.45rem 1rem;font-size:.72rem">Update Password</button>
+          <span class="save-msg" id="pw-msg"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Personal Info -->
+    <div class="edit-section">
+      <div class="edit-section-head">Personal Info</div>
+      <div class="edit-section-body">
+        <div class="edit-grid">
+          <div class="edit-field"><label class="edit-label">Full Name</label><input class="edit-input" id="e-hero_name" placeholder="Arush Ekghare"/></div>
+          <div class="edit-field"><label class="edit-label">Role / Title</label><input class="edit-input" id="e-hero_role" placeholder="Financial Planning &amp; Analysis"/></div>
+          <div class="edit-field"><label class="edit-label">Status Badge</label><input class="edit-input" id="e-hero_status" placeholder="Open to New Roles"/></div>
+          <div class="edit-field"><label class="edit-label">Email</label><input class="edit-input" id="e-hero_email" type="email" placeholder="aarushekghare@gmail.com"/></div>
+          <div class="edit-field"><label class="edit-label">Phone</label><input class="edit-input" id="e-hero_phone" placeholder="+91 80706 05056"/></div>
+          <div class="edit-field"><label class="edit-label">Location</label><input class="edit-input" id="e-hero_location" placeholder="Pune, India"/></div>
+          <div class="edit-field wide"><label class="edit-label">LinkedIn Profile URL</label><input class="edit-input" id="e-linkedin_url" placeholder="https://www.linkedin.com/in/arushekghare"/></div>
+          <div class="edit-field wide"><label class="edit-label">Hero Tagline</label><input class="edit-input" id="e-hero_tagline" placeholder="Financial Planning & Analysis Professional | Strategic Forecasting | ..."/></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="edit-section">
+      <div class="edit-section-head section-head-flex">Stats Bar (numbers below the banner) <button class="add-btn" onclick="addStat()">+ Add Stat</button></div>
+      <div class="edit-section-body" id="stat-container"><!-- rendered by JS --></div>
+    </div>
+
+    <!-- About -->
+    <div class="edit-section">
+      <div class="edit-section-head">About Me</div>
+      <div class="edit-section-body">
+        <div class="edit-grid cols1">
+          <div class="edit-field"><label class="edit-label">Paragraph 1</label><textarea class="edit-textarea" id="e-about_bio1"></textarea></div>
+          <div class="edit-field"><label class="edit-label">Paragraph 2</label><textarea class="edit-textarea" id="e-about_bio2"></textarea></div>
+          <div class="edit-field"><label class="edit-label">Paragraph 3</label><textarea class="edit-textarea" id="e-about_bio3"></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills -->
+    <div class="edit-section">
+      <div class="edit-section-head section-head-flex">Skills <button class="add-btn" onclick="addSkill()">+ Add Skill</button></div>
+      <div class="edit-section-body" id="skill-container"><!-- rendered by JS --></div>
+    </div>
+
+    <!-- Experience -->
+    <div class="edit-section">
+      <div class="edit-section-head section-head-flex">Work Experience <button class="add-btn" onclick="addExp()">+ Add Experience</button></div>
+      <div class="edit-section-body" id="exp-container"><!-- rendered by JS --></div>
+    </div>
+
+    <!-- Education -->
+    <div class="edit-section">
+      <div class="edit-section-head section-head-flex">Education <button class="add-btn" onclick="addEdu()">+ Add Education</button></div>
+      <div class="edit-section-body" id="edu-container"><!-- rendered by JS --></div>
+    </div>
+
+    <!-- Certifications -->
+    <div class="edit-section">
+      <div class="edit-section-head section-head-flex">Certifications <button class="add-btn" onclick="addCert()">+ Add Certification</button></div>
+      <div class="edit-section-body" id="cert-container"><!-- rendered by JS --></div>
+    </div>
+
+    <!-- Key Achievements -->
+    <div class="edit-section">
+      <div class="edit-section-head section-head-flex">Key Achievements <button class="add-btn" onclick="addAchv()">+ Add Achievement</button></div>
+      <div class="edit-section-body" id="achv-container"><!-- rendered by JS --></div>
+    </div>
+
+    <!-- Footer / Save -->
+    <div class="edit-footer">
+      <button class="save-btn" onclick="saveContent()">Save Changes →</button>
+      <span class="save-msg" id="save-msg"></span>
+      <span style="font-size:.7rem;color:var(--light);margin-left:auto">After saving, refresh your portfolio to see changes.</span>
+    </div>
+
+  </div><!-- end edit-panel -->
+
+</div>
+
+<script>
+// ── Config ──
+const DEFAULT_PASS = 'arush@2025';
+const KEY  = 'ae_enquiries';
+function getPass(){ return localStorage.getItem('ae_admin_pass') || DEFAULT_PASS; }
+
+// ── Auth ──
+function doLogin(){
+  const v = document.getElementById('pwd').value;
+  if(v === getPass()){
+    sessionStorage.setItem('ae_auth','1');
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    init();
+  } else {
+    document.getElementById('login-err').style.display='block';
+    document.getElementById('pwd').value='';
+  }
+}
+function doLogout(){
+  sessionStorage.removeItem('ae_auth');
+  window.location.href = 'index.html';
+}
+// Auto-login if session active
+if(sessionStorage.getItem('ae_auth')==='1'){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  window.addEventListener('DOMContentLoaded',init);
+}
+
+// ── Data helpers ──
+function load(){ return JSON.parse(localStorage.getItem(KEY)||'[]') }
+function save(d){ localStorage.setItem(KEY,JSON.stringify(d)) }
+
+// ── State ──
+let filter='all';
+
+function setFilter(f,btn){
+  filter=f;
+  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList();
+}
+
+// ── Stats ──
+function updateStats(data){
+  const vis = data.filter(e=>e.status!=='hidden');
+  const today = new Date().toDateString();
+  document.getElementById('s-total').textContent   = vis.length;
+  document.getElementById('s-new').textContent     = vis.filter(e=>e.status==='new').length;
+  document.getElementById('s-replied').textContent = vis.filter(e=>e.status==='replied').length;
+  document.getElementById('s-today').textContent   = vis.filter(e=>new Date(e.date).toDateString()===today).length;
+  const unread = vis.filter(e=>e.status==='new').length;
+  const badge  = document.getElementById('unread-badge');
+  badge.textContent = unread+' New';
+  badge.style.display = unread ? 'inline' : 'none';
+}
+
+// ── Render ──
+function renderList(){
+  const data  = load();
+  const query = document.getElementById('search').value.toLowerCase();
+  updateStats(data);
+
+  let items = data.filter(e=>{
+    if(e.status==='hidden') return false;
+    const matchF = filter==='all' || e.status===filter;
+    const matchQ = !query ||
+      e.name.toLowerCase().includes(query) ||
+      e.email.toLowerCase().includes(query) ||
+      e.subject.toLowerCase().includes(query) ||
+      e.message.toLowerCase().includes(query);
+    return matchF && matchQ;
+  });
+
+  const list  = document.getElementById('eq-list');
+  const empty = document.getElementById('empty');
+  if(!items.length){ list.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+
+  list.innerHTML = items.map(e=>`
+    <div class="eq-card ${e.status==='new'?'unread':''}" id="card-${e.id}">
+      <div class="eq-header" onclick="toggleCard('${e.id}')">
+        <div class="eq-check"><input type="checkbox" data-id="${e.id}" onclick="event.stopPropagation()"/></div>
+        <div class="eq-meta">
+          <div class="eq-name">
+            <span class="eq-name-val">${esc(e.name)}</span>
+            <span style="color:var(--light);font-weight:400;font-size:.72rem">&lt;${esc(e.email)}&gt;</span>
+          </div>
+          <div class="eq-subject">${esc(e.subject)}</div>
+          <div class="eq-preview">${esc(e.message.substring(0,90))}${e.message.length>90?'…':''}</div>
+        </div>
+        <div class="eq-right">
+          <div class="eq-time">${timeAgo(e.date)}</div>
+          <div class="badge badge-${e.status}">${e.status}</div>
+        </div>
+        <div class="eq-expand" id="arrow-${e.id}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="eq-body" id="body-${e.id}">
+        <div class="eq-field"><div class="eq-field-lbl">From</div><div class="eq-field-val">${esc(e.name)} · <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(e.email)}" target="_blank">${esc(e.email)}</a></div></div>
+        ${e.phone ? '<div class="eq-field"><div class="eq-field-lbl">Contact No.</div><div class="eq-field-val"><a href="tel:'+esc(e.phone)+'">'+esc(e.phone)+'</a></div></div>' : ''}
+        <div class="eq-field"><div class="eq-field-lbl">Subject</div><div class="eq-field-val">${esc(e.subject)}</div></div>
+        <div class="eq-field"><div class="eq-field-lbl">Received</div><div class="eq-field-val">${new Date(e.date).toLocaleString('en-IN',{dateStyle:'full',timeStyle:'short'})}</div></div>
+        <div class="eq-field"><div class="eq-field-lbl">Message</div><div class="eq-field-val" style="white-space:pre-wrap">${esc(e.message)}</div></div>
+        <div class="eq-actions">
+          <button class="ea-btn green" onclick="setStatus('${e.id}','replied')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            Mark Replied
+          </button>
+          <button class="ea-btn" onclick="setStatus('${e.id}','read')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Mark Read
+          </button>
+          <button class="ea-btn blue" onclick="replyEmail('${e.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 00-4-4H4"/></svg>
+            Reply via Gmail
+          </button>
+          <button class="ea-btn red" onclick="deleteEnquiry('${e.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+            Delete
+          </button>
+          <button class="ea-btn" onclick="hideEnquiry('${e.id}')" style="margin-left:auto">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            Hide
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── Actions ──
+function toggleCard(id){
+  const body  = document.getElementById('body-'+id);
+  const arrow = document.getElementById('arrow-'+id);
+  const isOpen = body.classList.toggle('open');
+  arrow.classList.toggle('open', isOpen);
+  if(isOpen){
+    const data = load();
+    const idx  = data.findIndex(e=>e.id===id);
+    if(idx>-1 && data[idx].status==='new'){
+      data[idx].status='read';
+      save(data);
+      document.getElementById('card-'+id).classList.remove('unread');
+      document.querySelector(`#card-${id} .badge`).className='badge badge-read';
+      document.querySelector(`#card-${id} .badge`).textContent='read';
+      updateStats(data);
+    }
+  }
+}
+
+function setStatus(id,status){
+  const data = load();
+  const idx  = data.findIndex(e=>e.id===id);
+  if(idx>-1){ data[idx].status=status; save(data); renderList(); }
+}
+
+function deleteEnquiry(id){
+  if(!confirm('Delete this enquiry? This cannot be undone.')) return;
+  const data = load().filter(e=>e.id!==id);
+  save(data); renderList();
+}
+
+function replyEmail(id){
+  const e = load().find(x=>x.id===id);
+  if(!e) return;
+  const url = 'https://mail.google.com/mail/?view=cm&fs=1'
+    +'&to='+encodeURIComponent(e.email)
+    +'&su='+encodeURIComponent('Re: '+e.subject)
+    +'&body='+encodeURIComponent('\n\n---\nOn '+new Date(e.date).toLocaleString()+', '+e.name+' wrote:\n'+e.message);
+  window.open(url,'_blank','noopener');
+  setStatus(id,'replied');
+}
+
+function hideEnquiry(id){
+  const data = load();
+  const idx = data.findIndex(e=>e.id===id);
+  if(idx>-1){ data[idx].status='hidden'; save(data); renderList(); }
+}
+
+function bulkMarkRead(){
+  const data = load().map(e=>({...e,status:e.status==='new'?'read':e.status}));
+  save(data); renderList();
+}
+
+function bulkDelete(){
+  if(!confirm('Delete ALL enquiries? This cannot be undone.')) return;
+  save([]); renderList();
+}
+
+// ── Utils ──
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+function timeAgo(iso){
+  const diff = Date.now()-new Date(iso).getTime();
+  const m=Math.floor(diff/60000),h=Math.floor(m/60),d=Math.floor(h/24);
+  if(d>0) return d+'d ago';
+  if(h>0) return h+'h ago';
+  if(m>0) return m+'m ago';
+  return 'Just now';
+}
+
+function init(){
+  renderList();
+  const pendingTab = sessionStorage.getItem('ae_tab');
+  if(pendingTab === 'edit'){
+    sessionStorage.removeItem('ae_tab');
+    switchTab('edit', document.getElementById('tab-edit'));
+  }
+}
+
+// ── Tab Switching ──
+function switchTab(tab, btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const isEnq = tab==='enquiries';
+  ['enq-statsbar','enq-toolbar','list-wrap'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display = isEnq ? '' : 'none';
+  });
+  const ep = document.getElementById('edit-panel');
+  ep.style.display = isEnq ? 'none' : 'block';
+  if(!isEnq) loadEditForm();
+}
+
+// ── Content Edit ──
+const CKEY = 'ae_content';
+const DEFAULTS = {
+  hero_name:'Arush Ekghare',
+  hero_role:'Financial Planning & Analysis',
+  hero_status:'Open to New Roles',
+  hero_email:'aarushekghare@gmail.com',
+  hero_phone:'+91 80706 05056',
+  hero_location:'Pune, India',
+  hero_tagline:'Financial Planning & Analysis Professional | Strategic Forecasting | Budgeting | Financial Modeling | Driving Data-Driven Decisions & Business Growth',
+  linkedin_url:'https://www.linkedin.com/in/arushekghare',
+  about_bio1:"I'm an FP&A specialist with 4+ years of experience across FMCG and technology sectors. My work centres on budgeting, rolling forecasts, cash flow modelling, and multi-market P&L management.",
+  about_bio2:"I believe finance should be a business partner, not a reporter. That means automating the routine so I can focus on variance drivers, scenario planning, and strategic insight.",
+  about_bio3:"My toolset spans Excel/VBA, Power BI, Python, SAP, and Oracle ERP — whatever it takes to get clean data into decision-makers' hands, fast.",
+};
+
+const DEFAULT_EXPS = [
+  { date:'Jan 2023 – Present', role:'Senior FP&A Analyst', co:'XYZ Corporation · Pune',
+    pts:'Lead monthly P&L close and variance commentary for 5 APAC markets\nBuilt rolling 13-week cash flow model improving forecast accuracy 18%\nPower BI dashboard cut reporting preparation time by 40%\nPartnered with business heads on ₹50Cr+ annual budget cycle',
+    tags:'Power BI,SAP,Excel,Cash Flow' },
+  { date:'Jul 2021 – Dec 2022', role:'FP&A Analyst', co:'ABC Technologies · Pune',
+    pts:'Managed monthly MIS and KPI tracking for 3 business units\nRedesigned AR dashboard, reducing DSO by 25% in two quarters\nSupported annual planning with driver-based scenario modelling',
+    tags:'Oracle ERP,Tableau,VBA' },
+  { date:'Jun 2020 – Jun 2021', role:'Finance Executive', co:'LMN Group · Mumbai',
+    pts:'Weekly cash flow reports and bank reconciliations\nQuarterly audit coordination and statutory compliance',
+    tags:'Tally ERP,Excel' }
+];
+
+const DEFAULT_EDUS = [
+  { deg:'MBA — Finance & Strategy', sch:'Symbiosis Institute of Management, Pune', yr:'2018 – 2020 · First Class' },
+  { deg:'B.Com (Hons.) — Accounting', sch:'University of Pune', yr:'2015 – 2018 · Distinction' }
+];
+
+const DEFAULT_CERTS = [
+  { name:'CFA Level I', org:'CFA Institute · 2022' },
+  { name:'Power BI Data Analyst Associate', org:'Microsoft Certified · 2023' }
+];
+
+const DEFAULT_SKILLS = ['Financial Modelling','Variance Analysis','Budgeting & Forecasting','Power BI / Tableau','SAP / Oracle ERP','Python / VBA'];
+
+const DEFAULT_ACHVS = [
+  { title:'18% Forecast Accuracy Improvement', desc:'Built rolling 13-week cash flow model with automated ERP refresh, replacing static monthly forecasts' },
+  { title:'₹2Cr+ Annual Cost Savings', desc:'Identified ₹80L in renegotiable vendor contracts and ₹1.2Cr avoidable spend through bottom-up cost review' },
+  { title:'25% DSO Reduction', desc:'Redesigned AR aging tracker with automated dunning alerts, unlocking ₹1.2Cr in working capital' },
+  { title:'Monthly Close: 5 Days → 3 Days', desc:'Automated journal extraction, intercompany elimination, and flash reporting using Python scripts' },
+  { title:'5-Market APAC P&L Visibility', desc:'Power BI dashboard with DAX measures for real-time multi-currency reporting and budget-vs-actual drill-downs' }
+];
+
+const DEFAULT_STATS = [
+  { val:'4+', lbl:'Years Exp.' },
+  { val:'18%', lbl:'Forecast ↑' },
+  { val:'5', lbl:'Markets' },
+  { val:'25%', lbl:'DSO ↓' },
+  { val:'₹2Cr+', lbl:'Savings' }
+];
+
+function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderStatBlocks(stats){
+  document.getElementById('stat-container').innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.85rem">'+
+    stats.map((s,i)=>`
+      <div id="stat-block-${i}" style="position:relative">
+        <div class="edit-field"><label class="edit-label">Stat ${i+1} — Value</label><input class="edit-input" id="e-stat-${i}-val" value="${escAttr(s.val||'')}"/></div>
+        <div class="edit-field" style="margin-top:.45rem"><label class="edit-label">Stat ${i+1} — Label</label><input class="edit-input" id="e-stat-${i}-lbl" value="${escAttr(s.lbl||'')}"/></div>
+        <button class="remove-btn" onclick="removeStat(${i})" style="position:absolute;top:0;right:0">Remove</button>
+      </div>
+    `).join('')+'</div>';
+}
+
+function collectStats(){
+  const blocks = document.querySelectorAll('[id^="stat-block-"]');
+  return Array.from(blocks).map((_,i)=>({
+    val: document.getElementById('e-stat-'+i+'-val').value,
+    lbl: document.getElementById('e-stat-'+i+'-lbl').value
+  }));
+}
+
+function addStat(){
+  const stats = collectStats();
+  stats.push({ val:'', lbl:'' });
+  renderStatBlocks(stats);
+}
+function removeStat(i){
+  if(!confirm('Remove this stat?')) return;
+  const stats = collectStats(); stats.splice(i,1); renderStatBlocks(stats);
+}
+
+// ── Skills ──
+function renderSkillBlocks(skills){
+  document.getElementById('skill-container').innerHTML = skills.map((s,i)=>`
+    <div style="display:inline-flex;align-items:center;gap:.4rem;margin:0 .4rem .4rem 0">
+      <input class="edit-input" id="e-skill-${i}" value="${escAttr(s)}" style="width:200px;padding:.4rem .6rem;font-size:.78rem" placeholder="e.g. Power BI"/>
+      <button class="remove-btn" onclick="removeSkill(${i})" style="padding:2px 8px;font-size:.65rem">x</button>
+    </div>
+  `).join('');
+}
+
+function collectSkills(){
+  const inputs = document.querySelectorAll('[id^="e-skill-"]');
+  return Array.from(inputs).map(el=>el.value).filter(v=>v.trim());
+}
+
+function addSkill(){
+  const skills = collectSkills();
+  skills.push('');
+  renderSkillBlocks(skills);
+}
+function removeSkill(i){
+  const skills = collectSkills(); skills.splice(i,1); renderSkillBlocks(skills);
+}
+
+function renderExpBlocks(exps){
+  document.getElementById('exp-container').innerHTML = exps.map((e,i)=>`
+    <div class="exp-block" id="exp-block-${i}">
+      <div class="exp-block-head">Job ${i+1}${i===0?' (Most Recent)':''} <button class="remove-btn" onclick="removeExp(${i})">Remove</button></div>
+      <div class="edit-grid">
+        <div class="edit-field"><label class="edit-label">Date Range</label><input class="edit-input" id="e-exp-${i}-date" value="${escAttr(e.date||'')}"/></div>
+        <div class="edit-field"><label class="edit-label">Job Title</label><input class="edit-input" id="e-exp-${i}-role" value="${escAttr(e.role||'')}"/></div>
+        <div class="edit-field"><label class="edit-label">Company &amp; Location</label><input class="edit-input" id="e-exp-${i}-co" value="${escAttr(e.co||'')}"/></div>
+        <div class="edit-field wide"><label class="edit-label">Bullet Points (one per line)</label><textarea class="edit-textarea tall" id="e-exp-${i}-pts">${esc(e.pts||'')}</textarea><div class="edit-hint">Each line becomes one bullet point</div></div>
+        <div class="edit-field wide"><label class="edit-label">Tags (comma-separated)</label><input class="edit-input" id="e-exp-${i}-tags" value="${escAttr(e.tags||'')}"/></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderEduBlocks(edus){
+  document.getElementById('edu-container').innerHTML = edus.map((e,i)=>`
+    <div class="exp-block" id="edu-block-${i}">
+      <div class="exp-block-head">Degree ${i+1} <button class="remove-btn" onclick="removeEdu(${i})">Remove</button></div>
+      <div class="edit-grid">
+        <div class="edit-field"><label class="edit-label">Degree</label><input class="edit-input" id="e-edu-${i}-deg" value="${escAttr(e.deg||'')}"/></div>
+        <div class="edit-field"><label class="edit-label">Institution</label><input class="edit-input" id="e-edu-${i}-sch" value="${escAttr(e.sch||'')}"/></div>
+        <div class="edit-field"><label class="edit-label">Year &amp; Grade</label><input class="edit-input" id="e-edu-${i}-yr" value="${escAttr(e.yr||'')}"/></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function collectExps(){
+  const blocks = document.querySelectorAll('[id^="exp-block-"]');
+  return Array.from(blocks).map((_,i)=>({
+    date: document.getElementById('e-exp-'+i+'-date').value,
+    role: document.getElementById('e-exp-'+i+'-role').value,
+    co:   document.getElementById('e-exp-'+i+'-co').value,
+    pts:  document.getElementById('e-exp-'+i+'-pts').value,
+    tags: document.getElementById('e-exp-'+i+'-tags').value
+  }));
+}
+
+function collectEdus(){
+  const blocks = document.querySelectorAll('[id^="edu-block-"]');
+  return Array.from(blocks).map((_,i)=>({
+    deg: document.getElementById('e-edu-'+i+'-deg').value,
+    sch: document.getElementById('e-edu-'+i+'-sch').value,
+    yr:  document.getElementById('e-edu-'+i+'-yr').value
+  }));
+}
+
+function addExp(){
+  const exps = collectExps();
+  exps.push({ date:'', role:'', co:'', pts:'', tags:'' });
+  renderExpBlocks(exps);
+  document.getElementById('exp-block-'+(exps.length-1)).scrollIntoView({behavior:'smooth'});
+}
+function removeExp(i){
+  if(!confirm('Remove this experience entry?')) return;
+  const exps = collectExps(); exps.splice(i,1); renderExpBlocks(exps);
+}
+
+function addEdu(){
+  const edus = collectEdus();
+  edus.push({ deg:'', sch:'', yr:'' });
+  renderEduBlocks(edus);
+  document.getElementById('edu-block-'+(edus.length-1)).scrollIntoView({behavior:'smooth'});
+}
+function removeEdu(i){
+  if(!confirm('Remove this education entry?')) return;
+  const edus = collectEdus(); edus.splice(i,1); renderEduBlocks(edus);
+}
+
+// ── Certifications ──
+function renderCertBlocks(certs){
+  document.getElementById('cert-container').innerHTML = certs.map((c,i)=>`
+    <div class="exp-block" id="cert-block-${i}">
+      <div class="exp-block-head">Certification ${i+1} <button class="remove-btn" onclick="removeCert(${i})">Remove</button></div>
+      <div class="edit-grid">
+        <div class="edit-field"><label class="edit-label">Certification Name</label><input class="edit-input" id="e-cert-${i}-name" value="${escAttr(c.name||'')}"/></div>
+        <div class="edit-field"><label class="edit-label">Issuing Organization &amp; Year</label><input class="edit-input" id="e-cert-${i}-org" value="${escAttr(c.org||'')}"/></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function collectCerts(){
+  const blocks = document.querySelectorAll('[id^="cert-block-"]');
+  return Array.from(blocks).map((_,i)=>({
+    name: document.getElementById('e-cert-'+i+'-name').value,
+    org:  document.getElementById('e-cert-'+i+'-org').value
+  }));
+}
+
+function addCert(){
+  const certs = collectCerts();
+  certs.push({ name:'', org:'' });
+  renderCertBlocks(certs);
+  document.getElementById('cert-block-'+(certs.length-1)).scrollIntoView({behavior:'smooth'});
+}
+function removeCert(i){
+  if(!confirm('Remove this certification?')) return;
+  const certs = collectCerts(); certs.splice(i,1); renderCertBlocks(certs);
+}
+
+// ── Key Achievements ──
+function renderAchvBlocks(achvs){
+  document.getElementById('achv-container').innerHTML = achvs.map((a,i)=>`
+    <div class="exp-block" id="achv-block-${i}">
+      <div class="exp-block-head">Achievement ${i+1} <button class="remove-btn" onclick="removeAchv(${i})">Remove</button></div>
+      <div class="edit-grid">
+        <div class="edit-field wide"><label class="edit-label">Achievement Title (e.g. 18% Forecast Accuracy Improvement)</label><input class="edit-input" id="e-achv-${i}-title" value="${escAttr(a.title||'')}"/></div>
+        <div class="edit-field wide"><label class="edit-label">Description</label><input class="edit-input" id="e-achv-${i}-desc" value="${escAttr(a.desc||'')}" placeholder="One-line impact description"/></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function collectAchvs(){
+  const blocks = document.querySelectorAll('[id^="achv-block-"]');
+  return Array.from(blocks).map((_,i)=>({
+    title: document.getElementById('e-achv-'+i+'-title').value,
+    desc:  document.getElementById('e-achv-'+i+'-desc').value
+  }));
+}
+
+function addAchv(){
+  const achvs = collectAchvs();
+  achvs.push({ title:'', desc:'' });
+  renderAchvBlocks(achvs);
+  document.getElementById('achv-block-'+(achvs.length-1)).scrollIntoView({behavior:'smooth'});
+}
+function removeAchv(i){
+  if(!confirm('Remove this achievement?')) return;
+  const achvs = collectAchvs(); achvs.splice(i,1); renderAchvBlocks(achvs);
+}
+
+function loadEditForm(){
+  const saved = JSON.parse(localStorage.getItem(CKEY)||'{}');
+  const c = Object.assign({}, DEFAULTS, saved);
+  // Simple text fields
+  Object.keys(DEFAULTS).forEach(k=>{
+    const el = document.getElementById('e-'+k);
+    if(el) el.value = c[k]||'';
+  });
+
+  // Stats — migrate from old format if needed
+  let stats = c.stats;
+  if(!stats){
+    stats = [];
+    for(let i=1;i<=10;i++){
+      if(c['stat'+i+'_val']||c['stat'+i+'_lbl']){
+        stats.push({ val:c['stat'+i+'_val']||'', lbl:c['stat'+i+'_lbl']||'' });
+      }
+    }
+    if(!stats.length) stats = DEFAULT_STATS;
+  }
+  renderStatBlocks(stats);
+
+  // Skills
+  let skills = c.skills || DEFAULT_SKILLS;
+  renderSkillBlocks(skills);
+
+  // Experience — migrate from old format if needed
+  let exps = c.experiences;
+  if(!exps){
+    exps = [];
+    for(let i=1;i<=10;i++){
+      if(c['exp'+i+'_date']||c['exp'+i+'_role']){
+        exps.push({ date:c['exp'+i+'_date']||'', role:c['exp'+i+'_role']||'',
+          co:c['exp'+i+'_co']||'', pts:c['exp'+i+'_pts']||'', tags:'' });
+      }
+    }
+    if(!exps.length) exps = DEFAULT_EXPS;
+  }
+  renderExpBlocks(exps);
+
+  // Education — migrate from old format if needed
+  let edus = c.education;
+  if(!edus){
+    edus = [];
+    for(let i=1;i<=10;i++){
+      if(c['edu'+i+'_deg']||c['edu'+i+'_sch']){
+        edus.push({ deg:c['edu'+i+'_deg']||'', sch:c['edu'+i+'_sch']||'', yr:c['edu'+i+'_yr']||'' });
+      }
+    }
+    if(!edus.length) edus = DEFAULT_EDUS;
+  }
+  renderEduBlocks(edus);
+
+  // Certifications
+  let certs = c.certifications || DEFAULT_CERTS;
+  renderCertBlocks(certs);
+
+  // Key Achievements
+  let achvs = c.achievements || DEFAULT_ACHVS;
+  renderAchvBlocks(achvs);
+
+  // Photo preview
+  const sp = localStorage.getItem('ae_photo');
+  document.getElementById('photo-img').src = sp || 'photo.jpg';
+
+  // CV status
+  updateCVStatus();
+}
+
+// ── Photo ──
+function handlePhotoUpload(input){
+  const file = input.files[0];
+  if(!file) return;
+  if(file.size > 3*1024*1024){ alert('Photo must be under 3 MB'); return; }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    localStorage.setItem('ae_photo', e.target.result);
+    document.getElementById('photo-img').src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function removePhoto(){
+  localStorage.removeItem('ae_photo');
+  document.getElementById('photo-img').src = 'photo.jpg';
+}
+
+// ── CV ──
+function handleCVUpload(input){
+  const file = input.files[0];
+  if(!file) return;
+  if(file.size > 5*1024*1024){ alert('CV must be under 5 MB'); return; }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    localStorage.setItem('ae_cv', e.target.result);
+    localStorage.setItem('ae_cv_name', file.name);
+    updateCVStatus();
+  };
+  reader.readAsDataURL(file);
+}
+function removeCV(){
+  localStorage.removeItem('ae_cv');
+  localStorage.removeItem('ae_cv_name');
+  updateCVStatus();
+}
+function updateCVStatus(){
+  const name = localStorage.getItem('ae_cv_name');
+  const el = document.getElementById('cv-status');
+  if(el){
+    el.textContent = name ? '✓ '+name : 'No CV uploaded';
+    el.style.color = name ? 'var(--green)' : 'var(--mid)';
+  }
+}
+
+// ── Password Change ──
+function changePassword(){
+  const curr = document.getElementById('pw-current').value;
+  const newP = document.getElementById('pw-new').value;
+  const conf = document.getElementById('pw-confirm').value;
+  const msg  = document.getElementById('pw-msg');
+  msg.style.color = 'var(--red)';
+  if(curr !== getPass()){ msg.textContent='Current password is incorrect'; return; }
+  if(newP.length < 4){ msg.textContent='New password too short (min 4 chars)'; return; }
+  if(newP !== conf){ msg.textContent='Passwords do not match'; return; }
+  localStorage.setItem('ae_admin_pass', newP);
+  msg.style.color='var(--green)'; msg.textContent='✓ Password updated!';
+  document.getElementById('pw-current').value='';
+  document.getElementById('pw-new').value='';
+  document.getElementById('pw-confirm').value='';
+  setTimeout(()=>{ msg.textContent=''; }, 3000);
+}
+
+function saveContent(){
+  const data = {};
+  Object.keys(DEFAULTS).forEach(k=>{
+    const el = document.getElementById('e-'+k);
+    if(el) data[k] = el.value;
+  });
+  data.stats          = collectStats();
+  data.skills         = collectSkills();
+  data.experiences    = collectExps();
+  data.education      = collectEdus();
+  data.certifications = collectCerts();
+  data.achievements   = collectAchvs();
+  // Keep existing projects (managed in projects-manage.html)
+  const existing = JSON.parse(localStorage.getItem(CKEY)||'{}');
+  if(existing.projects) data.projects = existing.projects;
+  localStorage.setItem(CKEY, JSON.stringify(data));
+  const msg = document.getElementById('save-msg');
+  msg.textContent = '✓ Saved successfully!';
+  setTimeout(()=>{ msg.textContent=''; }, 4000);
+}
+</script>
+</body>
+</html>

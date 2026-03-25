@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Arush Ekghare — FP&A Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+:root{
+  --black:#0a0a0a;
+  --dark:#1a1a1a;
+  --mid:#555;
+  --light:#999;
+  --rule:#d4d4d4;
+  --rule-light:#ececec;
+  --bg:#fafafa;
+  --white:#ffffff;
+}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--black)}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+/* ── Utility ── */
+.container{width:min(1080px,92%);margin:0 auto}
+.label{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--light)}
+
+/* ── Reveal ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ── Spacing helpers ── */
+.mb-1{margin-bottom:1rem}
+.mb-1-4{margin-bottom:1.4rem}
+.mt-2-mb-1{margin:2rem 0 1rem}
+.hidden{display:none}
+
+/* ──────────────────── NAV ──────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:56px;display:flex;align-items:center;
+  padding:0 min(3.5rem,5vw);
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s;
+}
+nav.scrolled{border-color:var(--rule)}
+.nav-logo{
+  font-family:'Playfair Display',serif;
+  font-size:1.05rem;font-weight:700;
+  color:var(--black);letter-spacing:.01em;
+}
+.nav-brand{display:flex;align-items:center;gap:.5rem;margin-right:auto}
+.admin-trigger{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:4px;
+  color:var(--light);opacity:.5;
+  transition:opacity .2s,color .2s,background .2s;
+  flex-shrink:0;
+}
+.admin-trigger:hover{opacity:1;color:var(--black);background:var(--rule-light)}
+.admin-trigger svg{width:13px;height:13px}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
+.nav-links a{
+  font-size:.75rem;font-weight:500;color:var(--light);
+  letter-spacing:.04em;transition:color .2s;position:relative;padding-bottom:2px;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--black)}
+.nav-links a.active::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:var(--black);
+}
+.nav-cta{
+  margin-left:1.8rem;border:1.5px solid var(--black);color:var(--black);
+  padding:6px 18px;font-size:.73rem;font-weight:600;letter-spacing:.04em;
+  transition:all .2s;white-space:nowrap;
+}
+.nav-cta:hover{background:var(--black);color:var(--white)}
+/* hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:3px}
+.hamburger span{width:20px;height:1.5px;background:var(--black);display:block;transition:.3s}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mob-menu{
+  display:none;position:fixed;top:56px;left:0;right:0;z-index:99;
+  background:var(--white);border-bottom:1px solid var(--rule);
+  padding:1.2rem min(3.5rem,5vw);
+  opacity:0;transform:translateY(-6px);
+  transition:opacity .25s,transform .25s;pointer-events:none;
+}
+.mob-menu.open{opacity:1;transform:none;pointer-events:all}
+.mob-menu a{display:block;padding:.65rem 0;font-size:.88rem;font-weight:500;border-bottom:1px solid var(--rule-light)}
+.mob-menu a:last-child{border:none;font-weight:700}
+
+/* ──────────────────── HERO ──────────────────── */
+#hero{padding-top:56px}
+
+/* ── Banner ── */
+.hero-banner{
+  position:relative;overflow:hidden;
+  background:#0d0d0c;
+  min-height:clamp(300px,38vw,400px);
+  display:flex;align-items:center;
+  justify-content:center;
+}
+.hero-banner-inner{
+  position:relative;z-index:3;
+  width:min(1080px,92%);
+  display:flex;align-items:center;
+  gap:clamp(2rem,4vw,3.5rem);
+  justify-content:flex-start;
+}
+/* geometric shape 1 — large dark wedge right */
+.hero-banner::before{
+  content:'';position:absolute;
+  top:0;right:0;bottom:0;
+  width:55%;
+  background:#171714;
+  clip-path:polygon(18% 0%,100% 0%,100% 100%,0% 100%);
+}
+/* geometric shape 2 — mid accent top-left */
+.hero-banner::after{
+  content:'';position:absolute;
+  top:0;left:0;
+  width:38%;height:58%;
+  background:#222220;
+  clip-path:polygon(0 0,100% 0,72% 100%,0 100%);
+}
+/* subtle bottom edge line */
+.hero-banner-line{
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);
+}
+
+/* ── Photo circle ── */
+.hero-avatar{
+  flex-shrink:0;
+  width:clamp(180px,20vw,250px);
+  height:clamp(180px,20vw,250px);
+  border-radius:50%;
+  border:5px solid rgba(255,255,255,.92);
+  overflow:hidden;
+  box-shadow:0 12px 50px rgba(0,0,0,.55),0 0 0 0 rgba(74,222,128,.6);
+  animation:photo-pulse 2.5s infinite;
+  position:relative;
+}
+@keyframes photo-pulse{
+  0%{box-shadow:0 12px 50px rgba(0,0,0,.55),0 0 0 0 rgba(74,222,128,.55)}
+  50%{box-shadow:0 12px 50px rgba(0,0,0,.55),0 0 0 12px rgba(74,222,128,0)}
+  100%{box-shadow:0 12px 50px rgba(0,0,0,.55),0 0 0 0 rgba(74,222,128,0)}
+}
+.hero-avatar img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center 12%;
+}
+
+/* ── Banner text ── */
+.hero-banner-text{
+  flex:1;
+  text-align:left;
+}
+.hero-status{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:.65rem;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(255,255,255,.5);
+  margin-bottom:1rem;
+}
+.hero-status::before{
+  content:'';width:5px;height:5px;background:#4ade80;
+  border-radius:50%;animation:blink 2.5s infinite;flex-shrink:0;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero-name{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,4.5vw,3.6rem);font-weight:900;
+  color:#fff;line-height:1;letter-spacing:-.01em;
+  margin-bottom:.6rem;
+}
+.hero-role{
+  font-size:clamp(.6rem,.8vw,.72rem);font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);margin-bottom:1.2rem;
+}
+.hero-contact-bar{
+  display:flex;align-items:center;gap:.5rem;
+  flex-wrap:wrap;
+}
+.hcb-item{
+  display:flex;align-items:center;gap:.4rem;
+  font-size:.76rem;color:rgba(255,255,255,.7);
+  text-decoration:none;transition:color .2s;
+}
+.hcb-item:hover{color:#fff}
+.hcb-item svg{width:12px;height:12px;opacity:.6;flex-shrink:0}
+.hcb-sep{color:rgba(255,255,255,.2);font-size:.9rem}
+.hero-tagline{
+  font-size:.72rem;font-weight:400;color:rgba(255,255,255,.4);
+  letter-spacing:.04em;line-height:1.6;
+  margin-top:1.2rem;padding-top:1rem;
+  border-top:1px solid rgba(255,255,255,.08);
+  max-width:600px;
+}
+
+/* ── Below-banner card ── */
+.hero-below{
+  background:#fff;
+  border-bottom:1px solid var(--rule);
+}
+.hero-below-inner{
+  width:min(1080px,92%);margin:0 auto;
+  padding:1.8rem 0;
+  display:flex;align-items:center;
+  gap:1.4rem;
+}
+/* Stats */
+.hero-stats{display:flex;flex-wrap:wrap;gap:0;row-gap:.6rem;flex:1;min-width:0}
+.hstat{
+  padding:.7rem 1.4rem;border-right:1px solid var(--rule);text-align:center;
+  flex-shrink:0;
+}
+.hstat:last-child{border-right:none}
+.hstat-n{font-size:1.4rem;font-weight:900;color:var(--black);line-height:1;font-family:'Playfair Display',serif}
+.hstat-l{font-size:.57rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--light);margin-top:3px}
+/* CTA + socials */
+.hero-actions{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;flex-shrink:0}
+.btn-solid{
+  background:var(--black);color:var(--white);
+  padding:9px 20px;font-size:.73rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:.45rem;
+  transition:all .2s;border:1.5px solid var(--black);
+}
+.btn-solid:hover{background:var(--white);color:var(--black)}
+.btn-ghost{
+  background:transparent;color:var(--black);
+  padding:9px 20px;font-size:.73rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  border:1.5px solid var(--black);
+  display:inline-flex;align-items:center;gap:.45rem;
+  transition:all .2s;
+}
+.btn-ghost:hover{background:var(--black);color:var(--white)}
+.soc{
+  width:34px;height:34px;border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--light);transition:all .2s;
+}
+.soc:hover{border-color:var(--black);background:var(--black);color:var(--white)}
+.soc svg{width:13px;height:13px}
+
+/* ──────────────────── SECTIONS ──────────────────── */
+section{padding:clamp(4rem,8vw,7rem) 0}
+.sec-head{margin-bottom:clamp(2.5rem,5vw,4rem)}
+.sec-num{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--light);margin-bottom:.5rem}
+.sec-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;
+  color:var(--black);line-height:1.1;
+}
+.sec-sub{font-size:.85rem;color:var(--mid);line-height:1.7;max-width:520px;margin-top:.8rem}
+
+/* ──────────────────── ABOUT ──────────────────── */
+#about{background:var(--bg);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(2rem,6vw,5rem);align-items:start}
+.about-body p{font-size:.87rem;color:var(--mid);line-height:1.8;margin-bottom:1rem}
+.about-body strong{color:var(--black);font-weight:600}
+.skills-list{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.45rem;margin-top:1.6rem;
+}
+.sk{
+  display:flex;align-items:center;gap:.55rem;
+  padding:.55rem .75rem;border:1px solid var(--rule);
+  font-size:.73rem;font-weight:500;color:var(--dark);
+  transition:border-color .2s,background .2s;
+}
+.sk:hover{border-color:var(--black);background:var(--black);color:var(--white)}
+.sk:hover svg{color:var(--white)}
+.sk svg{width:12px;height:12px;color:#16a34a;flex-shrink:0;transition:color .2s}
+
+/* ──────────────────── EXPERIENCE ──────────────────── */
+#resume{background:var(--white)}
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(2rem,6vw,5rem);align-items:start}
+/* Timeline */
+.tl{border-left:1px solid var(--rule);padding-left:1.8rem;display:flex;flex-direction:column;gap:2.5rem}
+.tl-item{position:relative}
+.tl-item::before{
+  content:'';position:absolute;left:-1.97rem;top:5px;
+  width:8px;height:8px;background:var(--black);border:2px solid var(--white);
+  box-shadow:0 0 0 1px var(--black);
+}
+.tl-date{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--light);margin-bottom:.4rem}
+.tl-role{font-size:.95rem;font-weight:700;color:var(--black);margin-bottom:.15rem}
+.tl-co{font-size:.78rem;color:var(--mid);margin-bottom:.7rem}
+.tl-pts{list-style:none;padding:0;display:flex;flex-direction:column;gap:.3rem}
+.tl-pts li{font-size:.79rem;color:var(--mid);line-height:1.6;padding-left:.9rem;position:relative}
+.tl-pts li::before{content:'—';position:absolute;left:0;color:var(--rule);font-size:.7rem}
+.tl-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem}
+.tl-tag{font-size:.62rem;font-weight:600;letter-spacing:.06em;padding:2px 8px;border:1px solid var(--rule);color:var(--mid);text-transform:uppercase}
+/* edu */
+.edu-list{display:flex;flex-direction:column;gap:.8rem}
+.edu-card{
+  display:flex;gap:1rem;align-items:flex-start;
+  border:1px solid var(--rule);padding:1.1rem 1.1rem;
+  transition:border-color .2s;
+}
+.edu-card:hover{border-color:var(--black)}
+.edu-icon-box{
+  width:36px;height:36px;border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.edu-icon-box svg{width:15px;height:15px;color:var(--black)}
+.edu-deg{font-size:.85rem;font-weight:700;color:var(--black)}
+.edu-sch{font-size:.74rem;color:var(--mid);margin-top:1px}
+.edu-yr{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--light);margin-top:.3rem}
+.achv-card{border-left:3px solid var(--black);background:var(--bg)}
+.achv-card:hover{border-left-color:var(--black);border-color:var(--black)}
+.achv-icon{background:var(--black);border-color:var(--black)}
+.achv-icon svg{color:var(--white) !important}
+
+/* ──────────────────── PROJECTS ──────────────────── */
+#projects{background:var(--bg);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.proj-outer{position:relative}
+.proj-scroll-nav{
+  display:none;align-items:center;justify-content:flex-end;gap:.35rem;
+  margin-bottom:.8rem;
+}
+.proj-scroll-nav.show{display:flex}
+.proj-arrow{
+  width:32px;height:32px;border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  background:var(--white);cursor:pointer;transition:all .2s;
+}
+.proj-arrow:hover{border-color:var(--black);background:var(--black);color:var(--white)}
+.proj-arrow svg{width:14px;height:14px}
+.proj-grid{
+  display:grid;
+  grid-template-rows:repeat(2,auto);
+  grid-auto-flow:column;
+  grid-auto-columns:calc(33.333% - .54rem);
+  gap:.8rem;
+  overflow-x:auto;scroll-behavior:smooth;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.proj-grid::-webkit-scrollbar{display:none}
+.pc{
+  border:1px solid var(--rule);padding:1.5rem;
+  background:var(--white);display:flex;flex-direction:column;
+  transition:border-color .2s,transform .2s;
+  min-width:0;
+}
+.pc:hover{border-color:var(--black);transform:translateY(-3px)}
+.pc-cat{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--light);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem}
+.pc-cat::before{content:'';width:14px;height:1px;background:var(--rule)}
+.pc-title{font-size:.93rem;font-weight:700;color:var(--black);margin-bottom:.5rem;line-height:1.3}
+.pc-desc{font-size:.77rem;color:var(--mid);line-height:1.65;flex:1;margin-bottom:1rem}
+.pc-metrics{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.85rem}
+.pc-m{font-size:.68rem;font-weight:700;padding:3px 8px;border:1px solid var(--rule);color:var(--dark)}
+.pc-tools{display:flex;flex-wrap:wrap;gap:.3rem}
+.pc-tool{font-size:.62rem;font-weight:600;letter-spacing:.04em;color:var(--light);text-transform:uppercase}
+.pc-tool+.pc-tool::before{content:'·';margin-right:.3rem;color:var(--rule)}
+.pc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:.6rem}
+.pc-btns{display:flex;flex-direction:column;gap:.35rem;align-items:flex-end}
+.pc-req{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:5px 14px;font-size:.65rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  border:1.5px solid var(--rule);background:transparent;color:var(--mid);
+  text-decoration:none;transition:all .2s;font-family:'Inter',sans-serif;cursor:pointer;
+}
+.pc-req:hover{border-color:var(--black);color:var(--black)}
+.pc-req svg{width:11px;height:11px}
+.pc-view{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:5px 14px;font-size:.65rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  border:1.5px solid var(--black);background:transparent;color:var(--black);
+  text-decoration:none;transition:all .2s;font-family:'Inter',sans-serif;
+}
+.pc-view:hover{background:var(--black);color:var(--white)}
+.pc-view svg{width:11px;height:11px}
+
+/* ──────────────────── CONTACT ──────────────────── */
+#contact{background:var(--white)}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(2rem,6vw,5rem);align-items:start}
+.ci-list{display:flex;flex-direction:column;gap:.6rem;margin-top:1.5rem}
+.ci{
+  display:flex;gap:.9rem;align-items:center;
+  border:1px solid var(--rule);padding:.9rem 1rem;
+  transition:border-color .2s;
+}
+.ci:hover{border-color:var(--black)}
+.ci-icon{
+  width:32px;height:32px;background:var(--black);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ci-icon svg{width:13px;height:13px;color:var(--white)}
+.ci-lbl{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--light)}
+.ci-val{font-size:.82rem;font-weight:500;color:var(--black);margin-top:1px}
+/* form */
+.cform{border:1px solid var(--rule);padding:2rem}
+.fg{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.9rem}
+.fg label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)}
+.fg input,.fg textarea,.fg select{
+  padding:.65rem .8rem;border:1px solid var(--rule);
+  font-family:'Inter',sans-serif;font-size:.82rem;color:var(--black);
+  background:var(--bg);transition:border-color .2s;outline:none;resize:vertical;
+  -webkit-appearance:none;
+}
+.fg input:focus,.fg textarea:focus{border-color:var(--black);background:var(--white)}
+.fg textarea{min-height:100px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.fsub{
+  width:100%;background:var(--black);color:var(--white);
+  padding:11px;font-size:.74rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;border:1.5px solid var(--black);
+  cursor:pointer;font-family:'Inter',sans-serif;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem;
+  margin-top:.3rem;
+}
+.fsub:hover{background:var(--white);color:var(--black)}
+.form-note{font-size:.72rem;color:var(--mid);text-align:center;margin-top:.7rem}
+
+/* ──────────────────── FOOTER ──────────────────── */
+footer{background:var(--black);color:rgba(255,255,255,.4);padding:1.8rem 0}
+.foot-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.foot-logo{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--white)}
+.foot-copy{font-size:.72rem}
+.foot-socs{display:flex;gap:.45rem}
+.foot-soc{
+  width:30px;height:30px;border:1px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);
+  transition:all .2s;
+}
+.foot-soc:hover{border-color:var(--white);color:var(--white)}
+.foot-soc svg{width:12px;height:12px}
+
+/* ──────────────────── RESPONSIVE ──────────────────── */
+
+/* Tablet landscape (≤1024px) */
+@media(max-width:1024px){
+  .proj-grid{grid-auto-columns:calc(50% - .4rem)}
+}
+
+/* Tablet portrait (≤768px) */
+@media(max-width:768px){
+  nav{padding:0 1.4rem}
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .mob-menu{display:block}
+
+  /* Hero banner — center everything */
+  .hero-banner{min-height:auto}
+  .hero-banner-inner{flex-direction:column;align-items:center;padding:2.5rem 0;gap:1.5rem;text-align:center}
+  .hero-banner-text{text-align:center}
+  .hero-avatar{width:150px;height:150px}
+  .hero-status{justify-content:center}
+  .hero-contact-bar{flex-direction:column;align-items:center;gap:.5rem}
+  .hcb-sep{display:none}
+  .hero-tagline{margin-left:auto;margin-right:auto}
+
+  /* Below banner */
+  .hero-below-inner{flex-direction:column;align-items:center;gap:1.2rem;padding:1.5rem 0}
+  .hero-stats{justify-content:center}
+  .hstat{padding:.55rem .9rem}
+  .hero-actions{justify-content:center;width:100%}
+  .btn-solid,.btn-ghost{flex:1;justify-content:center;min-width:140px}
+
+  /* Grids stack */
+  .about-grid{grid-template-columns:1fr}
+  .exp-grid{grid-template-columns:1fr}
+  .proj-grid{grid-template-rows:auto;grid-auto-flow:row;grid-auto-columns:unset;grid-template-columns:repeat(2,1fr)}
+
+  /* Sections */
+  .form-row{grid-template-columns:1fr}
+  .foot-inner{flex-direction:column;text-align:center}
+
+  /* Contact section */
+  .ci-grid{grid-template-columns:1fr}
+}
+
+/* Mobile (≤480px) */
+@media(max-width:480px){
+  .hero-banner-inner{padding:2rem 0;gap:1.2rem}
+  .hero-avatar{width:120px;height:120px;border-width:4px}
+  .hero-name{font-size:1.8rem}
+  .hero-role{letter-spacing:.12em;font-size:.6rem}
+  .hero-tagline{font-size:.65rem}
+
+  /* Stats */
+  .hero-stats{gap:0;width:100%}
+  .hstat{flex:1;padding:.5rem .4rem;min-width:0}
+  .hstat-n{font-size:1.1rem}
+  .hstat-l{font-size:.5rem;letter-spacing:.06em}
+
+  /* Buttons full width stack */
+  .hero-actions{flex-direction:column;width:100%}
+  .btn-solid,.btn-ghost{width:100%;justify-content:center}
+  .soc{width:30px;height:30px}
+
+  section{padding:3rem 0}
+  .sec-title{font-size:1.7rem}
+  .sec-sub{font-size:.8rem}
+
+  /* Projects single column */
+  .proj-grid{grid-template-columns:1fr}
+  .pc{padding:1.2rem}
+  .pc-footer{flex-direction:column;align-items:flex-start;gap:.6rem}
+  .pc-btns{flex-direction:row;align-items:center;width:100%}
+  .pc-req,.pc-view{flex:1;justify-content:center;text-align:center}
+
+  /* Skills */
+  .skills-list{grid-template-columns:repeat(2,1fr)}
+
+  /* Experience timeline */
+  .edu-card{padding:.85rem}
+  .achv-card .edu-sch{font-size:.68rem}
+}
+
+/* Very small (≤360px) */
+@media(max-width:360px){
+  .hero-name{font-size:1.55rem}
+  .hero-avatar{width:100px;height:100px}
+  .hstat-n{font-size:.95rem}
+  .hstat-l{font-size:.45rem}
+  .skills-list{grid-template-columns:1fr}
+  .pc-btns{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <div class="nav-brand">
+    <a href="admin.html" class="admin-trigger" title="Admin Panel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></a>
+    <a href="#hero" class="nav-logo" data-field="hero_name">Arush Ekghare</a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#hero" class="active">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#resume">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Connect</a>
+  <button class="hamburger" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <a href="#hero">Home</a>
+  <a href="#about">About</a>
+  <a href="#resume">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#contact">Contact →</a>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+
+  <!-- Dark geometric banner -->
+  <div class="hero-banner reveal">
+    <div class="hero-banner-line"></div>
+
+    <div class="hero-banner-inner">
+    <!-- Circular photo -->
+    <div class="hero-avatar">
+      <img src="photo.jpg" alt="Arush Ekghare"
+        onerror="this.onerror=null;this.style.background='#222';this.alt='AE'"/>
+    </div>
+
+    <!-- Name + title + contacts -->
+    <div class="hero-banner-text">
+      <div class="hero-status" data-field="hero_status">Open to New Roles</div>
+      <h1 class="hero-name" data-field="hero_name">Arush Ekghare</h1>
+      <div class="hero-role" data-field="hero_role">Financial Planning &amp; Analysis</div>
+      <div class="hero-contact-bar">
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=aarushekghare@gmail.com" target="_blank" rel="noopener" class="hcb-item" data-gmail-link>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 8l10 7 10-7"/></svg>
+          <span data-field="hero_email">aarushekghare@gmail.com</span>
+        </a>
+        <span class="hcb-sep">|</span>
+        <a href="tel:+918070605056" class="hcb-item" data-phone-link>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          <span data-field="hero_phone">+91 80706 05056</span>
+        </a>
+        <span class="hcb-sep">|</span>
+        <span class="hcb-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span data-field="hero_location">Pune, India</span>
+        </span>
+      </div>
+      <div class="hero-tagline" data-field="hero_tagline">Financial Planning & Analysis Professional | Strategic Forecasting | Budgeting | Financial Modeling | Driving Data-Driven Decisions & Business Growth</div>
+    </div><!-- end banner-text -->
+    </div><!-- end banner-inner -->
+  </div>
+
+  <!-- Stats + CTAs bar -->
+  <div class="hero-below">
+    <div class="hero-below-inner">
+      <!-- Stats -->
+      <div class="hero-stats reveal d1" id="stats-bar">
+        <div class="hstat"><div class="hstat-n" data-field="stat1_val">4+</div><div class="hstat-l" data-field="stat1_lbl">Years Exp.</div></div>
+        <div class="hstat"><div class="hstat-n" data-field="stat2_val">18%</div><div class="hstat-l" data-field="stat2_lbl">Forecast ↑</div></div>
+        <div class="hstat"><div class="hstat-n" data-field="stat3_val">5</div><div class="hstat-l" data-field="stat3_lbl">Markets</div></div>
+        <div class="hstat"><div class="hstat-n" data-field="stat4_val">25%</div><div class="hstat-l" data-field="stat4_lbl">DSO ↓</div></div>
+        <div class="hstat"><div class="hstat-n" data-field="stat5_val">₹2Cr+</div><div class="hstat-l" data-field="stat5_lbl">Savings</div></div>
+      </div>
+      <!-- Actions -->
+      <div class="hero-actions reveal d2">
+        <a href="#" id="cv-download-btn" class="btn-solid" onclick="downloadCV(event)">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download CV
+        </a>
+        <a href="#projects" class="btn-ghost">View Work →</a>
+        <a href="https://www.linkedin.com/in/arushekghare" target="_blank" rel="noopener" class="soc" title="LinkedIn" data-href-field="linkedin_url">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=aarushekghare@gmail.com" target="_blank" rel="noopener" class="soc" title="Email" data-gmail-link>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 8l10 7 10-7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-num">01 — About</div>
+      <h2 class="sec-title">Finance meets<br/>data strategy.</h2>
+      <p class="sec-sub">I partner with leadership to convert numbers into decisions — building the models, dashboards, and narratives that move organisations forward.</p>
+    </div>
+    <div class="about-grid">
+      <div>
+        <div class="about-body reveal">
+          <p data-field="about_bio1">I'm an FP&A specialist with 4+ years of experience across FMCG and technology sectors. My work centres on budgeting, rolling forecasts, cash flow modelling, and multi-market P&L management.</p>
+          <p data-field="about_bio2">I believe finance should be a business partner, not a reporter. That means automating the routine so I can focus on variance drivers, scenario planning, and strategic insight.</p>
+          <p data-field="about_bio3">My toolset spans Excel/VBA, Power BI, Python, SAP, and Oracle ERP — whatever it takes to get clean data into decision-makers' hands, fast.</p>
+        </div>
+      </div>
+      <div>
+        <div class="label reveal mb-1">Skills</div>
+        <div class="skills-list reveal d2" id="skills-list">
+          <div class="sk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Financial Modelling</div>
+          <div class="sk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Variance Analysis</div>
+          <div class="sk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Budgeting &amp; Forecasting</div>
+          <div class="sk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Power BI / Tableau</div>
+          <div class="sk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>SAP / Oracle ERP</div>
+          <div class="sk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Python / VBA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EXPERIENCE ═══ -->
+<section id="resume">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-num">02 — Experience</div>
+      <h2 class="sec-title">Career Timeline</h2>
+    </div>
+    <div class="exp-grid">
+      <!-- Work -->
+      <div>
+        <div class="label reveal mb-1-4">Work Experience</div>
+        <div class="tl" id="exp-timeline">
+          <div class="tl-item reveal">
+            <div class="tl-date" data-field="exp1_date">Jan 2023 – Present</div>
+            <div class="tl-role" data-field="exp1_role">Senior FP&amp;A Analyst</div>
+            <div class="tl-co" data-field="exp1_co">XYZ Corporation · Pune</div>
+            <ul class="tl-pts" data-pts-field="exp1_pts">
+              <li>Lead monthly P&amp;L close and variance commentary for 5 APAC markets</li>
+              <li>Built rolling 13-week cash flow model improving forecast accuracy 18%</li>
+              <li>Power BI dashboard cut reporting preparation time by 40%</li>
+              <li>Partnered with business heads on ₹50Cr+ annual budget cycle</li>
+            </ul>
+            <div class="tl-tags"><span class="tl-tag">Power BI</span><span class="tl-tag">SAP</span><span class="tl-tag">Excel</span><span class="tl-tag">Cash Flow</span></div>
+          </div>
+          <div class="tl-item reveal d1">
+            <div class="tl-date" data-field="exp2_date">Jul 2021 – Dec 2022</div>
+            <div class="tl-role" data-field="exp2_role">FP&amp;A Analyst</div>
+            <div class="tl-co" data-field="exp2_co">ABC Technologies · Pune</div>
+            <ul class="tl-pts" data-pts-field="exp2_pts">
+              <li>Managed monthly MIS and KPI tracking for 3 business units</li>
+              <li>Redesigned AR dashboard, reducing DSO by 25% in two quarters</li>
+              <li>Supported annual planning with driver-based scenario modelling</li>
+            </ul>
+            <div class="tl-tags"><span class="tl-tag">Oracle ERP</span><span class="tl-tag">Tableau</span><span class="tl-tag">VBA</span></div>
+          </div>
+          <div class="tl-item reveal d2">
+            <div class="tl-date" data-field="exp3_date">Jun 2020 – Jun 2021</div>
+            <div class="tl-role" data-field="exp3_role">Finance Executive</div>
+            <div class="tl-co" data-field="exp3_co">LMN Group · Mumbai</div>
+            <ul class="tl-pts" data-pts-field="exp3_pts">
+              <li>Weekly cash flow reports and bank reconciliations</li>
+              <li>Quarterly audit coordination and statutory compliance</li>
+            </ul>
+            <div class="tl-tags"><span class="tl-tag">Tally ERP</span><span class="tl-tag">Excel</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- Education -->
+      <div>
+        <div class="label reveal mb-1-4">Education</div>
+        <div class="edu-list reveal d1" id="edu-list-degrees">
+          <div class="edu-card">
+            <div class="edu-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+            <div>
+              <div class="edu-deg" data-field="edu1_deg">MBA — Finance &amp; Strategy</div>
+              <div class="edu-sch" data-field="edu1_sch">Symbiosis Institute of Management, Pune</div>
+              <div class="edu-yr" data-field="edu1_yr">2018 – 2020 · First Class</div>
+            </div>
+          </div>
+          <div class="edu-card">
+            <div class="edu-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+            <div>
+              <div class="edu-deg" data-field="edu2_deg">B.Com (Hons.) — Accounting</div>
+              <div class="edu-sch" data-field="edu2_sch">University of Pune</div>
+              <div class="edu-yr" data-field="edu2_yr">2015 – 2018 · Distinction</div>
+            </div>
+          </div>
+        </div>
+        <div class="label reveal d2 mt-2-mb-1">Certifications</div>
+        <div class="edu-list reveal d3" id="cert-list">
+          <div class="edu-card">
+            <div class="edu-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <div>
+              <div class="edu-deg">CFA Level I</div>
+              <div class="edu-sch">CFA Institute · 2022</div>
+            </div>
+          </div>
+          <div class="edu-card">
+            <div class="edu-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <div>
+              <div class="edu-deg">Power BI Data Analyst Associate</div>
+              <div class="edu-sch">Microsoft Certified · 2023</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="label reveal d3 mt-2-mb-1">Key Achievements</div>
+        <div class="edu-list reveal d4" id="achievements-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECTS ═══ -->
+<section id="projects">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-num">03 — Projects</div>
+      <h2 class="sec-title">Selected Work</h2>
+      <p class="sec-sub">Financial models, dashboards and automation built in real business contexts.</p>
+    </div>
+    <div class="proj-outer">
+      <div class="proj-scroll-nav" id="proj-scroll-nav">
+        <button class="proj-arrow" onclick="slideProj(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="proj-arrow" onclick="slideProj(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg></button>
+      </div>
+      <div class="proj-grid" id="proj-grid"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-num">04 — Contact</div>
+      <h2 class="sec-title">Let's Talk</h2>
+      <p class="sec-sub">Open to FP&A, financial analyst, and business finance roles in Pune and remote. Response within 24 hours.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="ci-list">
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=aarushekghare@gmail.com" target="_blank" rel="noopener" class="ci">
+            <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 8l10 7 10-7"/></svg></div>
+            <div><div class="ci-lbl">Email</div><div class="ci-val">aarushekghare@gmail.com</div></div>
+          </a>
+          <a href="tel:+918070605056" class="ci">
+            <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg></div>
+            <div><div class="ci-lbl">Phone</div><div class="ci-val">+91 80706 05056</div></div>
+          </a>
+          <a href="https://www.linkedin.com/in/arushekghare" target="_blank" rel="noopener" class="ci">
+            <div class="ci-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+            <div><div class="ci-lbl">LinkedIn</div><div class="ci-val">linkedin.com/in/arushekghare</div></div>
+          </a>
+          <div class="ci">
+            <div class="ci-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div><div class="ci-lbl">Location</div><div class="ci-val">Pune, Maharashtra, India</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <form class="cform" onsubmit="handleForm(event)">
+          <div class="form-row">
+            <div class="fg"><label>First Name</label><input id="cf-fname" type="text" placeholder="Ravi" required/></div>
+            <div class="fg"><label>Last Name</label><input id="cf-lname" type="text" placeholder="Sharma"/></div>
+          </div>
+          <div class="form-row">
+            <div class="fg"><label>Email</label><input id="cf-email" type="email" placeholder="ravi@company.com" required/></div>
+            <div class="fg"><label>Contact No.</label><input id="cf-phone" type="tel" placeholder="+91 98765 43210" required/></div>
+          </div>
+          <div class="fg"><label>Subject</label><input id="cf-subject" type="text" placeholder="FP&A Analyst Opportunity" required/></div>
+          <div class="fg"><label>Message</label><textarea id="cf-message" placeholder="Hi Arush, I came across your portfolio and would love to connect..." required></textarea></div>
+          <button type="submit" class="fsub" id="fsub">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send Message
+          </button>
+          <div class="form-note hidden" id="fnote"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="foot-inner">
+      <div class="foot-logo">Arush Ekghare</div>
+      <div class="foot-copy">© 2025 · FP&A Portfolio · Pune, India</div>
+      <div class="foot-socs">
+        <a href="https://www.linkedin.com/in/arushekghare" target="_blank" rel="noopener" class="foot-soc">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=aarushekghare@gmail.com" target="_blank" rel="noopener" class="foot-soc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 8l10 7 10-7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Hamburger
+const ham = document.getElementById('ham');
+const mob = document.getElementById('mobMenu');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');mob.classList.toggle('open')});
+mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');mob.classList.remove('open')}));
+
+// Nav scroll state + active section
+const navEl = document.getElementById('nav');
+const secs = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  navEl.classList.toggle('scrolled',scrollY>10);
+  let cur='';
+  secs.forEach(s=>{if(scrollY>=s.offsetTop-100)cur=s.id});
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+},{passive:true});
+
+// Reveal on scroll
+let lastScroll = 0;
+let scrollDir = 'down';
+window.addEventListener('scroll',()=>{
+  scrollDir = window.scrollY > lastScroll ? 'down' : 'up';
+  lastScroll = window.scrollY;
+},{passive:true});
+
+const obs = new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+    } else if(scrollDir==='up'){
+      e.target.classList.remove('visible');
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+function openProjLinkByIdx(e, idx){
+  e.preventDefault();
+  var info = window._projLinks[idx];
+  if(info) openProjLink(info.url);
+}
+
+function openProjLink(url){
+  var viewUrl = url;
+
+  // Google Drive: /file/d/ID/view → /file/d/ID/preview
+  var driveMatch = url.match(/drive\.google\.com\/file\/d\/([^\/\?]+)/);
+  if(driveMatch){
+    viewUrl = 'https://drive.google.com/file/d/'+driveMatch[1]+'/preview?usp=sharing&rm=minimal';
+  }
+  // Google Drive: open?id=ID
+  var driveOpen = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+  if(driveOpen){
+    viewUrl = 'https://drive.google.com/file/d/'+driveOpen[1]+'/preview?usp=sharing&rm=minimal';
+  }
+  // Google Docs/Sheets/Slides: convert edit/view URL to preview
+  var docsMatch = url.match(/(docs\.google\.com\/(spreadsheets|document|presentation)\/d\/[^\/]+)/);
+  if(docsMatch){
+    viewUrl = 'https://'+docsMatch[1]+'/preview';
+  }
+
+  window.open(viewUrl, '_blank');
+}
+
+function requestDoc(e, idx){
+  e.preventDefault();
+  var title = (window._projTitles && window._projTitles[idx]) || 'Project Document';
+  var subjectField = document.getElementById('cf-subject');
+  var msgField = document.getElementById('cf-message');
+  if(subjectField) subjectField.value = 'Document Request: ' + title;
+  if(msgField) msgField.value = 'Hi Arush,\n\nI would like to request the document for your project: ' + title + '.\n\nThank you.';
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+}
+
+function slideProj(dir){
+  var s = document.getElementById('proj-grid');
+  if(s) s.scrollBy({ left: dir * 340, behavior: 'smooth' });
+}
+
+function downloadCV(e){
+  e.preventDefault();
+  alert('CV not uploaded yet.');
+}
+
+function handleForm(e){
+  e.preventDefault();
+  const fname   = document.getElementById('cf-fname').value.trim();
+  const lname   = document.getElementById('cf-lname').value.trim();
+  const email   = document.getElementById('cf-email').value.trim();
+  const phone   = document.getElementById('cf-phone').value.trim();
+  const subject = document.getElementById('cf-subject').value.trim();
+  const message = document.getElementById('cf-message').value.trim();
+
+  const enquiry = {
+    id: Date.now().toString(),
+    name: (fname+' '+lname).trim(),
+    email, phone, subject, message,
+    date: new Date().toISOString(),
+    status: 'new'
+  };
+
+  const stored = JSON.parse(localStorage.getItem('ae_enquiries') || '[]');
+  stored.unshift(enquiry);
+  localStorage.setItem('ae_enquiries', JSON.stringify(stored));
+
+  const btn  = document.getElementById('fsub');
+  const note = document.getElementById('fnote');
+  btn.innerHTML = `<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Message Sent!`;
+  btn.style.background = '#166534';
+  note.textContent = "Thanks! Your message has been received. I'll get back to you within 24 hours.";
+  note.classList.remove('hidden'); note.style.color = '#166534';
+  e.target.reset();
+  setTimeout(()=>{
+    btn.innerHTML=`<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message`;
+    btn.style.background=''; note.classList.add('hidden');
+  },5000);
+}
+</script>
+
+<!-- ── Content Loader (reads ae_content from localStorage set by admin panel) ── -->
+<script>
+(function(){
+  // CV download
+  var cvData = localStorage.getItem('ae_cv');
+  var cvName = localStorage.getItem('ae_cv_name');
+  if(cvData && cvName){
+    var btn = document.getElementById('cv-download-btn');
+    if(btn){ btn.href = cvData; btn.download = cvName; btn.onclick = null; }
+  }
+
+  // Load saved photo
+  var sp = localStorage.getItem('ae_photo');
+  if(sp){
+    var heroImg = document.querySelector('.hero-avatar img');
+    if(heroImg) heroImg.src = sp;
+  }
+
+  var c;
+  try{ c = JSON.parse(localStorage.getItem('ae_content')||'{}'); }catch(e){ c = {}; }
+
+  // Simple text fields
+  document.querySelectorAll('[data-field]').forEach(function(el){
+    var key = el.getAttribute('data-field');
+    var val = c[key];
+    if(key === 'hero_status'){
+      var avatar = document.querySelector('.hero-avatar');
+      if(!val || !val.trim()){
+        el.style.display = 'none';
+        if(avatar) avatar.style.animation = 'none';
+      } else {
+        el.textContent = val;
+        el.style.display = '';
+        if(avatar) avatar.style.animation = '';
+      }
+      return;
+    }
+    if(val !== undefined && val !== '') el.textContent = val;
+  });
+
+  // Bullet point lists
+  document.querySelectorAll('[data-pts-field]').forEach(function(ul){
+    var val = c[ul.getAttribute('data-pts-field')];
+    if(val){
+      ul.innerHTML = val.split('\n').filter(Boolean).map(function(pt){
+        return '<li>'+pt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</li>';
+      }).join('');
+    }
+  });
+
+  // Gmail links — update href when email changes
+  if(c.hero_email){
+    document.querySelectorAll('[data-gmail-link]').forEach(function(a){
+      a.href = 'https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(c.hero_email);
+    });
+  }
+
+  // Phone link — update href
+  if(c.hero_phone){
+    document.querySelectorAll('[data-phone-link]').forEach(function(a){
+      a.href = 'tel:'+c.hero_phone.replace(/[^+\d]/g,'');
+    });
+  }
+
+  // LinkedIn URL
+  if(c.linkedin_url){
+    document.querySelectorAll('[data-href-field="linkedin_url"]').forEach(function(a){
+      a.href = c.linkedin_url;
+    });
+  }
+
+  // Helper
+  function _esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  // Dynamic stats bar
+  if(c.stats && c.stats.length){
+    var sb = document.getElementById('stats-bar');
+    if(sb){
+      sb.innerHTML = c.stats.map(function(s){
+        return '<div class="hstat"><div class="hstat-n">'+_esc(s.val)+'</div><div class="hstat-l">'+_esc(s.lbl)+'</div></div>';
+      }).join('');
+    }
+  }
+
+  // Dynamic experience timeline
+  if(c.experiences && c.experiences.length){
+    var tl = document.getElementById('exp-timeline');
+    if(tl){
+      tl.innerHTML = c.experiences.map(function(e){
+        var pts = (e.pts||'').split('\n').filter(Boolean).map(function(pt){
+          return '<li>'+_esc(pt)+'</li>';
+        }).join('');
+        var tags = (e.tags||'').split(',').filter(Boolean).map(function(t){
+          return '<span class="tl-tag">'+_esc(t.trim())+'</span>';
+        }).join('');
+        return '<div class="tl-item reveal visible">'+
+          '<div class="tl-date">'+_esc(e.date)+'</div>'+
+          '<div class="tl-role">'+_esc(e.role)+'</div>'+
+          '<div class="tl-co">'+_esc(e.co)+'</div>'+
+          '<ul class="tl-pts">'+pts+'</ul>'+
+          (tags?'<div class="tl-tags">'+tags+'</div>':'')+
+          '</div>';
+      }).join('');
+    }
+  }
+
+  // Dynamic education list
+  if(c.education && c.education.length){
+    var el = document.getElementById('edu-list-degrees');
+    if(el){
+      el.innerHTML = c.education.map(function(e){
+        return '<div class="edu-card">'+
+          '<div class="edu-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>'+
+          '<div>'+
+            '<div class="edu-deg">'+_esc(e.deg)+'</div>'+
+            '<div class="edu-sch">'+_esc(e.sch)+'</div>'+
+            '<div class="edu-yr">'+_esc(e.yr)+'</div>'+
+          '</div></div>';
+      }).join('');
+    }
+  }
+
+  // Dynamic projects — always render (use defaults if none saved)
+  var _defaultProjs = [
+    { cat:'Forecasting', title:'Rolling 13-Week Cash Flow Model', desc:'Dynamic Excel-VBA model integrating AR/AP aging, payroll and capex schedules. Automated weekly refresh from ERP exports.', metrics:'Accuracy +18%,Prep time \u219387%', tools:'Excel,VBA,SAP' },
+    { cat:'Dashboard', title:'APAC P&L Management Dashboard', desc:'Power BI with DAX measures for real-time 5-market P&L visibility, drill-down by BU, channel, and budget-vs-actual comparisons.', metrics:'5 Markets,Report time \u219340%', tools:'Power BI,DAX,SQL' },
+    { cat:'Working Capital', title:'AR Collections & DSO Optimisation', desc:'Rebuilt AR aging tracker with automated dunning alerts and collector KPI tracking. Identified top-20 accounts = 68% of overdue value.', metrics:'DSO \u219325%,\u20B91.2Cr unlocked', tools:'Excel,VBA,Oracle' },
+    { cat:'Budgeting', title:'Annual Operating Plan Model', desc:'Led AOP build for \u20B950Cr+ revenue base, consolidating 8 cost centres with driver-based revenue and headcount planning, plus scenario toggles.', metrics:'\u20B950Cr+ budget,8 stakeholders', tools:'Excel,SAP BPC,PowerPoint' },
+    { cat:'Cost Analysis', title:'Overhead Spend Analytics', desc:'Bottom-up cost review across G&A, marketing and logistics. Identified \u20B980L in renegotiable vendor contracts and \u20B91.2Cr avoidable spend.', metrics:'\u20B92Cr+ savings,12 contracts', tools:'Excel,Python,Tableau' },
+    { cat:'Automation', title:'Monthly Close Automation', desc:'Python scripts for journal extraction, intercompany elimination, and flash report generation. Reduced close cycle from 5 days to 3 days.', metrics:'Close \u21932 days,Manual steps \u219360%', tools:'Python,pandas,SAP' }
+  ];
+  var allProjs = (c.projects && c.projects.length) ? c.projects : _defaultProjs;
+  // Store links globally so onclick can access them without escaping issues
+  window._projLinks = {};
+  window._projTitles = {};
+  allProjs.forEach(function(p,i){
+    window._projTitles[i] = p.title;
+    if(p.link) window._projLinks[i] = {url:p.link, title:p.title};
+  });
+  var pg = document.getElementById('proj-grid');
+  if(pg){
+    function _buildCard(p, idx){
+      var metrics = (p.metrics||'').split(',').filter(Boolean).map(function(m){
+        return '<span class="pc-m">'+_esc(m.trim())+'</span>';
+      }).join('');
+      var tools = (p.tools||'').split(',').filter(Boolean).map(function(t){
+        return '<span class="pc-tool">'+_esc(t.trim())+'</span>';
+      }).join('');
+      var viewBtn = '';
+      if(p.link){
+        viewBtn = '<a class="pc-view" href="#" onclick="openProjLinkByIdx(event,'+idx+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</a>';
+      }
+      var reqBtn = '<a class="pc-req" href="#contact" onclick="requestDoc(event,'+idx+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Request Document</a>';
+      var btns = '<div class="pc-btns">'+reqBtn+viewBtn+'</div>';
+      return '<div class="pc reveal visible">'+
+        '<div class="pc-cat">'+_esc(p.cat)+'</div>'+
+        '<div class="pc-title">'+_esc(p.title)+'</div>'+
+        '<div class="pc-desc">'+_esc(p.desc)+'</div>'+
+        (metrics?'<div class="pc-metrics">'+metrics+'</div>':'')+
+        '<div class="pc-footer">'+(tools?'<div class="pc-tools">'+tools+'</div>':'<div></div>')+btns+'</div>'+
+        '</div>';
+    }
+    pg.innerHTML = allProjs.map(function(p,i){ return _buildCard(p,i); }).join('');
+    if(allProjs.length > 6){
+      var nav = document.getElementById('proj-scroll-nav');
+      if(nav) nav.classList.add('show');
+    }
+  }
+
+  // Dynamic certifications list
+  if(c.certifications && c.certifications.length){
+    var cl = document.getElementById('cert-list');
+    if(cl){
+      cl.innerHTML = c.certifications.map(function(cert){
+        return '<div class="edu-card">'+
+          '<div class="edu-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>'+
+          '<div>'+
+            '<div class="edu-deg">'+_esc(cert.name)+'</div>'+
+            '<div class="edu-sch">'+_esc(cert.org)+'</div>'+
+          '</div></div>';
+      }).join('');
+    }
+  }
+
+  // Dynamic skills list
+  var skillData = c.skills || ['Financial Modelling','Variance Analysis','Budgeting & Forecasting','Power BI / Tableau','SAP / Oracle ERP','Python / VBA'];
+  var sl = document.getElementById('skills-list');
+  if(sl && skillData.length){
+    var skIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>';
+    sl.innerHTML = skillData.map(function(s){
+      return '<div class="sk">'+skIcon+_esc(s)+'</div>';
+    }).join('');
+  }
+
+  // Dynamic achievements list
+  var achvData = c.achievements || [
+    { title:'18% Forecast Accuracy Improvement', desc:'Built rolling 13-week cash flow model with automated ERP refresh, replacing static monthly forecasts' },
+    { title:'\u20B92Cr+ Annual Cost Savings', desc:'Identified \u20B980L in renegotiable vendor contracts and \u20B91.2Cr avoidable spend through bottom-up cost review' },
+    { title:'25% DSO Reduction', desc:'Redesigned AR aging tracker with automated dunning alerts, unlocking \u20B91.2Cr in working capital' },
+    { title:'Monthly Close: 5 Days \u2192 3 Days', desc:'Automated journal extraction, intercompany elimination, and flash reporting using Python scripts' },
+    { title:'5-Market APAC P&L Visibility', desc:'Power BI dashboard with DAX measures for real-time multi-currency reporting and budget-vs-actual drill-downs' }
+  ];
+  var al = document.getElementById('achievements-list');
+  if(al && achvData.length){
+    var achvIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+    al.innerHTML = achvData.map(function(a){
+      return '<div class="edu-card achv-card">'+
+        '<div class="edu-icon-box achv-icon">'+achvIcon+'</div>'+
+        '<div>'+
+          '<div class="edu-deg">'+_esc(a.title)+'</div>'+
+          '<div class="edu-sch">'+_esc(a.desc)+'</div>'+
+        '</div></div>';
+    }).join('');
+  }
+})();
+</script>
+</body>
+</html>

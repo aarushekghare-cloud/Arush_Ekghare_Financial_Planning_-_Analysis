@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Hidden Messages — Arush Ekghare</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0a0a0a;--dark:#1a1a1a;--mid:#555;--light:#888;
+  --rule:#e2e2e2;--bg:#f5f5f4;--white:#fff;
+  --green:#16a34a;
+  --amber:#d97706;--amber-bg:#fffbeb;--amber-bd:#fde68a;
+  --blue:#2563eb;
+  --red:#dc2626;
+}
+html{font-size:16px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--black);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:'Inter',sans-serif;cursor:pointer}
+
+/* Login */
+#login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:var(--black);
+}
+.login-box{background:var(--white);width:min(380px,92%);padding:2.5rem}
+.login-logo{font-size:1.1rem;font-weight:800;color:var(--black);margin-bottom:.3rem}
+.login-sub{font-size:.75rem;color:var(--light);margin-bottom:2rem}
+.login-label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:.35rem}
+.login-input{
+  width:100%;padding:.7rem .85rem;border:1.5px solid var(--rule);
+  font-family:'Inter',sans-serif;font-size:.85rem;outline:none;
+  transition:border-color .2s;background:var(--bg);
+}
+.login-input:focus{border-color:var(--black);background:var(--white)}
+.login-btn{
+  width:100%;margin-top:1.2rem;padding:.8rem;
+  background:var(--black);color:var(--white);
+  font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border:none;transition:opacity .2s;
+}
+.login-btn:hover{opacity:.85}
+.login-err{font-size:.75rem;color:var(--red);margin-top:.7rem;display:none}
+
+/* App */
+#app{display:none;flex-direction:column;min-height:100vh}
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:var(--black);color:var(--white);
+  height:56px;display:flex;align-items:center;
+  padding:0 min(2.5rem,4vw);gap:1rem;
+}
+.topbar-logo{font-size:.95rem;font-weight:800;margin-right:auto}
+.topbar-logo span{color:#9ca3af;font-weight:400;font-size:.78rem;margin-left:.5rem}
+.topbar-btn{
+  background:transparent;border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.7);font-size:.72rem;font-weight:600;
+  padding:5px 14px;transition:all .2s;
+}
+.topbar-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+.topbar-badge{
+  background:#dc2626;color:#fff;font-size:.65rem;font-weight:700;
+  padding:2px 8px;border-radius:100px;
+}
+
+.list-wrap{padding:1.2rem min(2.5rem,4vw);flex:1}
+.empty-state{text-align:center;padding:5rem 1rem;color:var(--light);font-size:.85rem}
+.empty-state svg{width:40px;height:40px;margin:0 auto 1rem;opacity:.3;display:block}
+
+/* Cards */
+.eq-card{background:var(--white);border:1px solid var(--rule);margin-bottom:.6rem;transition:border-color .2s;overflow:hidden}
+.eq-card:hover{border-color:#aaa}
+.eq-header{
+  display:grid;grid-template-columns:1fr auto auto;
+  align-items:center;gap:.8rem;padding:.9rem 1.1rem;cursor:pointer;
+}
+.eq-meta{min-width:0}
+.eq-name{font-size:.88rem;font-weight:700;color:var(--black);display:flex;align-items:center;gap:.5rem}
+.eq-name-val{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eq-preview{font-size:.75rem;color:var(--light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.eq-subject{font-size:.76rem;font-weight:600;color:var(--mid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eq-right{display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;flex-shrink:0}
+.eq-time{font-size:.65rem;color:var(--light);white-space:nowrap}
+.badge{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:2px;white-space:nowrap;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.eq-expand{width:18px;height:18px;flex-shrink:0;color:var(--light);transition:transform .25s}
+.eq-expand.open{transform:rotate(180deg)}
+.eq-expand svg{width:100%;height:100%}
+
+.eq-body{display:none;padding:1rem 1.2rem 1.2rem;border-top:1px solid #f0f0f0;background:#fafafa}
+.eq-body.open{display:block}
+.eq-field{margin-bottom:.8rem}
+.eq-field-lbl{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--light);margin-bottom:.2rem}
+.eq-field-val{font-size:.83rem;color:var(--dark);line-height:1.65}
+.eq-field-val a{color:var(--blue);text-decoration:underline}
+.eq-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--rule)}
+.ea-btn{
+  padding:.4rem .9rem;font-size:.7rem;font-weight:600;
+  border:1.5px solid var(--rule);background:var(--white);
+  color:var(--mid);transition:all .2s;display:inline-flex;align-items:center;gap:.35rem;
+}
+.ea-btn svg{width:11px;height:11px}
+.ea-btn:hover{border-color:var(--black);color:var(--black)}
+.ea-btn.green:hover{border-color:var(--green);color:var(--green)}
+.ea-btn.red:hover{border-color:var(--red);color:var(--red)}
+
+@media(max-width:600px){
+  .eq-header{grid-template-columns:1fr auto}
+  .eq-right{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Arush Ekghare</div>
+    <div class="login-sub">Hidden Messages — Private Access</div>
+    <label class="login-label" for="pwd">Password</label>
+    <input class="login-input" type="password" id="pwd" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div class="login-err" id="login-err">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-logo">Hidden Messages <span>Private</span></div>
+    <span id="h-count" class="topbar-badge">0</span>
+    <button class="topbar-btn" onclick="doLogout()">Sign Out</button>
+  </div>
+
+  <div class="list-wrap">
+    <div class="empty-state" id="empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+      No hidden messages.
+    </div>
+    <div id="eq-list"></div>
+  </div>
+</div>
+
+<script>
+const HIDDEN_PASS = 'Sowbi@1771';
+const KEY = 'ae_enquiries';
+
+// Auth
+function doLogin(){
+  const v = document.getElementById('pwd').value;
+  if(v === HIDDEN_PASS){
+    sessionStorage.setItem('ae_hidden_auth','1');
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    renderList();
+  } else {
+    document.getElementById('login-err').style.display='block';
+    document.getElementById('pwd').value='';
+  }
+}
+function doLogout(){
+  sessionStorage.removeItem('ae_hidden_auth');
+  window.location.href = 'admin.html';
+}
+if(sessionStorage.getItem('ae_hidden_auth')==='1'){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  window.addEventListener('DOMContentLoaded', renderList);
+}
+
+// Data
+function load(){ return JSON.parse(localStorage.getItem(KEY)||'[]'); }
+function save(d){ localStorage.setItem(KEY, JSON.stringify(d)); }
+
+function renderList(){
+  const data = load().filter(e => e.status === 'hidden');
+  document.getElementById('h-count').textContent = data.length + ' Hidden';
+
+  const list  = document.getElementById('eq-list');
+  const empty = document.getElementById('empty');
+  if(!data.length){ list.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+
+  list.innerHTML = data.map(e => `
+    <div class="eq-card" id="card-${e.id}">
+      <div class="eq-header" onclick="toggleCard('${e.id}')">
+        <div class="eq-meta">
+          <div class="eq-name">
+            <span class="eq-name-val">${esc(e.name)}</span>
+            <span style="color:var(--light);font-weight:400;font-size:.72rem">&lt;${esc(e.email)}&gt;</span>
+          </div>
+          <div class="eq-subject">${esc(e.subject)}</div>
+          <div class="eq-preview">${esc(e.message.substring(0,90))}${e.message.length>90?'…':''}</div>
+        </div>
+        <div class="eq-right">
+          <div class="eq-time">${timeAgo(e.date)}</div>
+          <div class="badge">hidden</div>
+        </div>
+        <div class="eq-expand" id="arrow-${e.id}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="eq-body" id="body-${e.id}">
+        <div class="eq-field"><div class="eq-field-lbl">From</div><div class="eq-field-val">${esc(e.name)} · <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(e.email)}" target="_blank">${esc(e.email)}</a></div></div>
+        ${e.phone ? '<div class="eq-field"><div class="eq-field-lbl">Contact No.</div><div class="eq-field-val"><a href="tel:'+esc(e.phone)+'">'+esc(e.phone)+'</a></div></div>' : ''}
+        <div class="eq-field"><div class="eq-field-lbl">Subject</div><div class="eq-field-val">${esc(e.subject)}</div></div>
+        <div class="eq-field"><div class="eq-field-lbl">Received</div><div class="eq-field-val">${new Date(e.date).toLocaleString('en-IN',{dateStyle:'full',timeStyle:'short'})}</div></div>
+        <div class="eq-field"><div class="eq-field-lbl">Message</div><div class="eq-field-val" style="white-space:pre-wrap">${esc(e.message)}</div></div>
+        <div class="eq-actions">
+          <button class="ea-btn green" onclick="unhideEnquiry('${e.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Restore to Inbox
+          </button>
+          <button class="ea-btn red" onclick="deleteEnquiry('${e.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+            Delete Permanently
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleCard(id){
+  const body  = document.getElementById('body-'+id);
+  const arrow = document.getElementById('arrow-'+id);
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+function unhideEnquiry(id){
+  const data = load();
+  const idx  = data.findIndex(e=>e.id===id);
+  if(idx>-1){ data[idx].status='read'; save(data); renderList(); }
+}
+
+function deleteEnquiry(id){
+  if(!confirm('Delete this message permanently? This cannot be undone.')) return;
+  const data = load().filter(e=>e.id!==id);
+  save(data); renderList();
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function timeAgo(iso){
+  const diff = Date.now()-new Date(iso).getTime();
+  const m=Math.floor(diff/60000),h=Math.floor(m/60),d=Math.floor(h/24);
+  if(d>0) return d+'d ago';
+  if(h>0) return h+'h ago';
+  if(m>0) return m+'m ago';
+  return 'Just now';
+}
+</script>
+</body>
+</html>
